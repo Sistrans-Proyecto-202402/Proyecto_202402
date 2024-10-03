@@ -1,6 +1,5 @@
 package uniandes.edu.co.proyecto.repositories;
 
-
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,7 +23,6 @@ public interface ProveedorProductoRepository extends JpaRepository<ProveedorProd
     @Query(value = "INSERT INTO proveedorproducto (producto_id, proveedor_id) VALUES (:productoId, :proveedorId)", nativeQuery = true)
     void insertProveedorProducto(@Param("productoId") Long productoId,
                                  @Param("proveedorId") Long proveedorId);
-
 
     @Modifying
     @Transactional
