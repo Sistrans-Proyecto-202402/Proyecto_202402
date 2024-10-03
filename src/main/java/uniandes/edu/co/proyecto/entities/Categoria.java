@@ -10,7 +10,7 @@ import lombok.Data;
 @Table(name = "categoria")
 public class Categoria extends BaseEntity {
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre", nullable = false, unique = true, updatable = false)
     private String nombre;
 
     @Column(name = "descripcion", nullable = false)

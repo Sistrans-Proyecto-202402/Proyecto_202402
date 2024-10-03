@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "producto")
 public class Producto extends BaseEntity {
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre", nullable = false, unique = true)
     private String nombre;
 
     @Column(name = "costobodega", nullable = false)
@@ -37,10 +37,10 @@ public class Producto extends BaseEntity {
     @Column(name = "pesoempaque", nullable = false)
     private double pesoEmpaque;
 
-    @Column(name = "fechaexpiracion")
+    @Column(name = "fechaexpiracion", updatable = false)
     private LocalDate fechaVencimiento;
 
-    @Column(name = "codigobarras", nullable = false)
+    @Column(name = "codigobarras", nullable = false, unique = true, updatable = false)
     private String codigoBarras;
 
     @ManyToOne

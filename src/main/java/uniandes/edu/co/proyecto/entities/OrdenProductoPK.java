@@ -10,10 +10,10 @@ import lombok.Data;
 public class OrdenProductoPK {
 
     @ManyToOne
-    @JoinColumn(name = "ordencompra_id", referencedColumnName = "id")
+    @JoinColumn(name = "ordencompra_id", referencedColumnName = "id", nullable = false)
     private OrdenCompra ordenCompra;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id", referencedColumnName = "id")
+    @JoinColumn(name = "producto_id", referencedColumnName = "id", nullable = false)
     private Producto producto;
 }

@@ -137,9 +137,6 @@ ALTER TABLE sucursal ADD CONSTRAINT sucursal_ciudad_fk FOREIGN KEY ( ciudad_id )
 
 -- Restricciones de las tablas
 -- Unique
-ALTER TABLE bodega
-ADD CONSTRAINT unique_bodega_nombre UNIQUE (nombre);
-
 ALTER TABLE categoria
 ADD CONSTRAINT unique_categoria_nombre UNIQUE (nombre);
 

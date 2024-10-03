@@ -18,7 +18,7 @@ public class Sucursal extends BaseEntity {
     @Column(name = "direccion", nullable = false)
     private String direccion;
 
-    @Column(name = "telefono", nullable = false)
+    @Column(name = "telefono", nullable = false, unique = true)
     private Long telefono;
 
     @Column(name = "tamano", nullable = false)

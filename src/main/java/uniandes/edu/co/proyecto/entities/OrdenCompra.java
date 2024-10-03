@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "ordencompra")
 public class OrdenCompra extends BaseEntity {
 
-    @Column(name = "fechacreacion", nullable = false)
+    @Column(name = "fechacreacion", nullable = false, updatable = false)
     private LocalDate fechaCreacion;
 
     @Column(name = "fechaentrega", nullable = false)

@@ -17,7 +17,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findAllProductos();
 
     @Query(value = "SELECT * FROM producto WHERE id = :idProducto", nativeQuery = true)  
-    Producto findProductoById(@Param("id") Long idProducto);
+    Producto findProductoById(@Param("idProducto") Long idProducto);
 
     @Modifying
     @Transactional
@@ -32,7 +32,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
                         @Param("pesoEmpaque") double pesoEmpaque,
                         @Param("fechaVencimiento") LocalDate fechaVencimiento,
                         @Param("codigoBarras") String codigoBarras,
-                        @Param("categoriaId") Long idCategoria);
+                        @Param("idCategoria") Long idCategoria);
     
     @Modifying
     @Transactional
@@ -46,7 +46,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
                         @Param("unidadMedida") String unidadMedida,
                         @Param("volumenEmpaque") double volumenEmpaque,
                         @Param("pesoEmpaque") double pesoEmpaque,
-                        @Param("categoriaId") Long idCategoria);
+                        @Param("idCategoria") Long idCategoria);
 
     @Modifying
     @Transactional
