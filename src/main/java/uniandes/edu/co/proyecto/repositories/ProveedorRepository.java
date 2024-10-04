@@ -1,6 +1,6 @@
 package uniandes.edu.co.proyecto.repositories;
 
-import java.util.List;
+import java.util.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,11 +11,12 @@ import uniandes.edu.co.proyecto.entities.Proveedor;
 
 @Repository
 public interface ProveedorRepository extends JpaRepository<Proveedor, Long> {
+    
     @Query(value = "SELECT * FROM proveedor", nativeQuery = true)
     List<Proveedor> findAllProveedores();
 
     @Query(value = "SELECT * FROM proveedor WHERE id = :idProveedor", nativeQuery = true)
-    Proveedor findProveedorById(@Param("idProveedor") Long idProveedor);
+    Optional<Proveedor> findProveedorById(@Param("idProveedor") Long idProveedor);
 
     @Modifying
     @Transactional

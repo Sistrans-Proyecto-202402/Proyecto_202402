@@ -1,6 +1,6 @@
 package uniandes.edu.co.proyecto.repositories;
 
-import java.util.List;
+import java.util.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,12 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import uniandes.edu.co.proyecto.entities.Sucursal;
 
 @Repository
-public interface SucursalRepository extends JpaRepository<Sucursal, Long>{
+public interface SucursalRepository extends JpaRepository<Sucursal, Long> {
+
     @Query(value = "SELECT * FROM sucursal", nativeQuery = true)
     List<Sucursal> findAllSucursales();
 
     @Query(value = "SELECT * FROM sucursal WHERE id = :idSucursal", nativeQuery = true)
-    Sucursal findSucursalById(@Param("idSucursal") Long idSucursal);
+    Optional<Sucursal> findSucursalById(@Param("idSucursal") Long idSucursal);
 
     @Modifying
     @Transactional

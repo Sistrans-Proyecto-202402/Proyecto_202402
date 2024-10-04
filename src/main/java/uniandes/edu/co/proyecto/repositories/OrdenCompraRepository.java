@@ -7,8 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
 import uniandes.edu.co.proyecto.entities.OrdenCompra;
-import java.util.List;
 import java.time.LocalDate;
+import java.util.*;
 
 @Repository
 public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Long> {
@@ -17,7 +17,7 @@ public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Long> 
     List<OrdenCompra> findAllOrdenesCompra();
 
     @Query(value = "SELECT * FROM ordencompra WHERE id = :idOrdenCompra", nativeQuery = true)
-    OrdenCompra findOrdenCompraById(@Param("idOrdenCompra") Long idOrdenCompra);
+    Optional<OrdenCompra> findOrdenCompraById(@Param("idOrdenCompra") Long idOrdenCompra);
 
     @Modifying
     @Transactional

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
 import uniandes.edu.co.proyecto.entities.ProductoSucursal;
 import uniandes.edu.co.proyecto.entities.ProductoSucursalPK;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public interface ProductoSucursalRepository extends JpaRepository<ProductoSucursal, ProductoSucursalPK> {
@@ -17,8 +17,7 @@ public interface ProductoSucursalRepository extends JpaRepository<ProductoSucurs
     List<ProductoSucursal> findAllProductosSucursal();
 
     @Query(value = "SELECT * FROM productosucursal WHERE sucursal_id = :idSucursal AND producto_id = :idProducto", nativeQuery = true)
-    ProductoSucursal findProductoSucursalById(@Param("idSucursal") Long idSucursal,
-                                              @Param("idProducto") Long idProducto);
+    Optional<ProductoSucursal> findProductoSucursalById(@Param("idSucursal") Long idSucursal, @Param("idProducto") Long idProducto);
 
     @Modifying
     @Transactional
@@ -37,6 +36,5 @@ public interface ProductoSucursalRepository extends JpaRepository<ProductoSucurs
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM productosucursal WHERE sucursal_id = :idSucursal AND producto_id = :idProducto", nativeQuery = true)
-    void deleteProductoSucursal(@Param("idSucursal") Long idSucursal,
-                                @Param("idProducto") Long idProducto); 
+    void deleteProductoSucursal(@Param("idSucursal") Long idSucursal, @Param("idProducto") Long idProducto); 
 }

@@ -10,13 +10,13 @@ import uniandes.edu.co.proyecto.entities.*;
 import java.util.*;
 
 @Repository
-public interface CiudadRepository extends JpaRepository<Ciudad, Long>
-{
+public interface CiudadRepository extends JpaRepository<Ciudad, Long> {
+    
     @Query(value = "SELECT * FROM ciudad", nativeQuery = true)
     List<Ciudad> findAllCiudades();
 
     @Query(value = "SELECT * FROM ciudad WHERE id = :idCiudad", nativeQuery = true)
-    Ciudad findCiudadById(Long idCiudad);
+    Optional<Ciudad> findCiudadById(Long idCiudad);
 
     @Modifying
     @Transactional

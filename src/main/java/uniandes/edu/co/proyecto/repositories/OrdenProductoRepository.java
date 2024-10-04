@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
 import uniandes.edu.co.proyecto.entities.OrdenProducto;
 import uniandes.edu.co.proyecto.entities.OrdenProductoPK;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public interface OrdenProductoRepository extends JpaRepository<OrdenProducto, OrdenProductoPK> {
@@ -17,8 +17,7 @@ public interface OrdenProductoRepository extends JpaRepository<OrdenProducto, Or
     List<OrdenProducto> findAllOrdenesProducto();
 
     @Query(value = "SELECT * FROM ordenproducto WHERE ordencompra_id = :idOrdenCompra AND producto_id = :idProducto", nativeQuery = true)
-    OrdenProducto findOrdenProductoById(@Param("idOrdenCompra") Long idOrdenCompra,
-                                        @Param("idProducto") Long idProducto);
+    Optional<OrdenProducto> findOrdenProductoById(@Param("idOrdenCompra") Long idOrdenCompra, @Param("idProducto") Long idProducto);
 
     @Modifying
     @Transactional
@@ -39,6 +38,5 @@ public interface OrdenProductoRepository extends JpaRepository<OrdenProducto, Or
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM ordenproducto WHERE ordencompra_id = :idOrdenCompra AND producto_id = :idProducto", nativeQuery = true)
-    void deleteOrdenProducto(@Param("idOrdenCompra") Long idOrdenCompra,
-                             @Param("idProducto") Long idProducto);                        
+    void deleteOrdenProducto(@Param("idOrdenCompra") Long idOrdenCompra, @Param("idProducto") Long idProducto);                        
 }

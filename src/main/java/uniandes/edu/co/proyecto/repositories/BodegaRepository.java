@@ -11,33 +11,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface BodegaRepository extends JpaRepository<Bodega, Long> {
+
     @Query(value = "SELECT * FROM bodega", nativeQuery = true)
     List<Bodega> findAllBodegas();
 
     @Query(value = "SELECT * FROM bodega WHERE id = :idBodega", nativeQuery = true)
-    Bodega findBodegaById(Long idBodega);
-
-    // @Query(value = "SELECT * FROM bodega WHERE sucursal_id = :idSucursal", nativeQuery = true)
-    // List<Bodega> findBodegasBySucursal(Long idSucursal);
+    Optional<Bodega> findBodegaById(Long idBodega);
 
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO bodega (nombre, tamano, sucursal_id) VALUES (:nombre, :tamano, :idSucursal)", nativeQuery = true)
-    void insertBodega(
-        @Param("nombre") String nombre,
-        @Param("tamano") Integer tamano,
-        @Param("idSucursal") Long idSucursal
-    );
+    void insertBodega(@Param("nombre") String nombre,
+                      @Param("tamano") Integer tamano,
+                      @Param("idSucursal") Long idSucursal);
 
     @Modifying
     @Transactional
     @Query(value = "UPDATE bodega SET nombre = :nombre, tamano = :tamano, sucursal_id = :idSucursal WHERE id = :idBodega", nativeQuery = true)
-    void updateBodega(
-        @Param("idBodega") Long idBodega,
-        @Param("nombre") String nombre,
-        @Param("tamano") Integer tamano,
-        @Param("idSucursal") Long idSucursal
-    );
+    void updateBodega(@Param("idBodega") Long idBodega,
+                      @Param("nombre") String nombre,
+                      @Param("tamano") Integer tamano,
+                      @Param("idSucursal") Long idSucursal);
 
     @Modifying
     @Transactional

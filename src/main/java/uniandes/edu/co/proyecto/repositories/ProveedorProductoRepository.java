@@ -1,6 +1,6 @@
 package uniandes.edu.co.proyecto.repositories;
 
-import java.util.List;
+import java.util.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,17 +12,17 @@ import uniandes.edu.co.proyecto.entities.ProveedorProductoPK;
 
 @Repository
 public interface ProveedorProductoRepository extends JpaRepository<ProveedorProducto, ProveedorProductoPK> {
+    
     @Query(value = "SELECT * FROM proveedorproducto", nativeQuery = true)
     List<ProveedorProducto> findAllProveedorProductos();
 
     @Query(value = "SELECT * FROM proveedorproducto WHERE producto_id = :productoId AND proveedor_id = :proveedorId", nativeQuery = true)
-    ProveedorProducto findProveedorProductoById(@Param("productoId") Long productoId, @Param("proveedorId") Long proveedorId);
+    Optional<ProveedorProducto> findProveedorProductoById(@Param("productoId") Long productoId, @Param("proveedorId") Long proveedorId);
 
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO proveedorproducto (producto_id, proveedor_id) VALUES (:productoId, :proveedorId)", nativeQuery = true)
-    void insertProveedorProducto(@Param("productoId") Long productoId,
-                                 @Param("proveedorId") Long proveedorId);
+    void insertProveedorProducto(@Param("productoId") Long productoId, @Param("proveedorId") Long proveedorId);
 
     @Modifying
     @Transactional
