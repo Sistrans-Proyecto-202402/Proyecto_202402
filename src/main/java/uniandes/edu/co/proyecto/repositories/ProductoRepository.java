@@ -9,6 +9,7 @@ import uniandes.edu.co.proyecto.entities.Producto;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
@@ -17,7 +18,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findAllProductos();
 
     @Query(value = "SELECT * FROM producto WHERE id = :idProducto", nativeQuery = true)  
-    Producto findProductoById(@Param("idProducto") Long idProducto);
+    Optional<Producto> findProductoById(@Param("idProducto") Long idProducto);
 
     @Modifying
     @Transactional
