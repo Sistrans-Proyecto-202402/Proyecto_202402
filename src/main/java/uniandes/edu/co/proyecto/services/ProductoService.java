@@ -30,15 +30,16 @@ public class ProductoService {
     }
 
     public void insertProducto(Producto producto) {
+
+        if ((producto.getCategoria().getId() == 1) && (producto.getFechaVencimiento() == null)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos de la categoría perecederos deben tener fecha de vencimiento");
+        }
+
+        if ((producto.getCategoria().getId() != 1) && (producto.getFechaVencimiento() != null)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos distintos a la categoría perecederos no deben tener fecha de vencimiento");
+        }
+
         try {
-            if ((producto.getCategoria().getId() == 1) && (producto.getFechaVencimiento() == null)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos de la categoría perecederos deben tener fecha de vencimiento");
-            }
-
-            else if ((producto.getCategoria().getId() != 1) && (producto.getFechaVencimiento() != null)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos distintos a la categoría perecederos no deben tener fecha de vencimiento");
-            }
-
             productoRepository.insertProducto(producto.getNombre(), producto.getCostoBodega(), producto.getPrecioUnitario(), producto.getPresentacion(), producto.getCantidad(), producto.getUnidadMedida(), producto.getVolumenEmpaque(), producto.getPesoEmpaque(), producto.getFechaVencimiento(), producto.getCodigoBarras(), producto.getCategoria().getId());
         }
         catch (Exception e) {
@@ -47,15 +48,20 @@ public class ProductoService {
     }
 
     public void updateProducto(Long idProducto, Producto producto) {
+
+        if (productoRepository.findProductoById(idProducto).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto no se encuentra registrado");
+        } 
+
+        if ((producto.getCategoria().getId() == 1) && (producto.getFechaVencimiento() == null)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos de la categoría perecederos deben tener fecha de vencimiento");
+        }
+
+        if ((producto.getCategoria().getId() != 1) && (producto.getFechaVencimiento() != null)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos distintos a la categoría perecederos no deben tener fecha de vencimiento");
+        }
+
         try {
-            if ((producto.getCategoria().getId() == 1) && (producto.getFechaVencimiento() == null)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos de la categoría perecederos deben tener fecha de vencimiento");
-            }
-
-            else if ((producto.getCategoria().getId() != 1) && (producto.getFechaVencimiento() != null)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos distintos a la categoría perecederos no deben tener fecha de vencimiento");
-            }
-
             productoRepository.updateProducto(idProducto, producto.getNombre(), producto.getCostoBodega(), producto.getPrecioUnitario(), producto.getPresentacion(), producto.getCantidad(), producto.getUnidadMedida(), producto.getVolumenEmpaque(), producto.getPesoEmpaque(), producto.getCategoria().getId());
         }
         catch (Exception e) {
@@ -64,6 +70,11 @@ public class ProductoService {
     }
 
     public void deleteProducto(Long idProducto) {
+
+        if (productoRepository.findProductoById(idProducto).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto no se encuentra registrado");
+        }
+        
         try {
             productoRepository.deleteProducto(idProducto);
         }
