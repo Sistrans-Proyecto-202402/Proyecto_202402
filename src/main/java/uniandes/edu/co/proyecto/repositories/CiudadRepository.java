@@ -12,7 +12,7 @@ import java.util.*;
 @Repository
 public interface CiudadRepository extends JpaRepository<Ciudad, Long> {
     
-    @Query(value = "SELECT * FROM ciudad", nativeQuery = true)
+    @Query(value = "SELECT * FROM ciudad ORDER BY ciudad.id", nativeQuery = true)
     List<Ciudad> findAllCiudades();
 
     @Query(value = "SELECT * FROM ciudad WHERE id = :idCiudad", nativeQuery = true)

@@ -12,7 +12,7 @@ import java.util.*;
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     
-    @Query(value = "SELECT * FROM categoria", nativeQuery = true)
+    @Query(value = "SELECT * FROM categoria ORDER BY categoria.id", nativeQuery = true)
     List<Categoria> findAllCategorias();
 
     @Query(value = "SELECT * FROM categoria WHERE id = :idCategoria", nativeQuery = true)

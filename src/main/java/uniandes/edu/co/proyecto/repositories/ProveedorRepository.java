@@ -12,7 +12,7 @@ import uniandes.edu.co.proyecto.entities.Proveedor;
 @Repository
 public interface ProveedorRepository extends JpaRepository<Proveedor, Long> {
     
-    @Query(value = "SELECT * FROM proveedor", nativeQuery = true)
+    @Query(value = "SELECT * FROM proveedor ORDER BY proveedor.id", nativeQuery = true)
     List<Proveedor> findAllProveedores();
 
     @Query(value = "SELECT * FROM proveedor WHERE id = :idProveedor", nativeQuery = true)

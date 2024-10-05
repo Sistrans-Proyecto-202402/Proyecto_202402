@@ -12,7 +12,7 @@ import uniandes.edu.co.proyecto.entities.Sucursal;
 @Repository
 public interface SucursalRepository extends JpaRepository<Sucursal, Long> {
 
-    @Query(value = "SELECT * FROM sucursal", nativeQuery = true)
+    @Query(value = "SELECT * FROM sucursal ORDER BY sucursal.id", nativeQuery = true)
     List<Sucursal> findAllSucursales();
 
     @Query(value = "SELECT * FROM sucursal WHERE id = :idSucursal", nativeQuery = true)

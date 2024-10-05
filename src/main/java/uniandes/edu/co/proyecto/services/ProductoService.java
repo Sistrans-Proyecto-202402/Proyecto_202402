@@ -77,7 +77,7 @@ public class ProductoService {
         }
 
         try {
-            productoRepository.insertProducto(producto.getNombre(), producto.getCostoBodega(), producto.getPrecioUnitario(), producto.getPresentacion(), producto.getCantidad(), producto.getUnidadMedida(), producto.getVolumenEmpaque(), producto.getPesoEmpaque(), producto.getFechaVencimiento(), producto.getCodigoBarras(), producto.getCategoria().getId());
+            productoRepository.insertProducto(producto.getNombre(), producto.getCostoBodega(), producto.getPrecioUnitario(), producto.getPresentacion(), producto.getCantidad(), producto.getUnidadMedida().name(), producto.getVolumenEmpaque(), producto.getPesoEmpaque(), producto.getFechaVencimiento(), producto.getCodigoBarras(), producto.getCategoria().getId());
         }
         catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al insertar el producto");
@@ -131,7 +131,7 @@ public class ProductoService {
         }
 
         try {
-            productoRepository.updateProducto(idProducto, producto.getNombre(), producto.getCostoBodega(), producto.getPrecioUnitario(), producto.getPresentacion(), producto.getCantidad(), producto.getUnidadMedida(), producto.getVolumenEmpaque(), producto.getPesoEmpaque(), producto.getFechaVencimiento(), producto.getCategoria().getId());
+            productoRepository.updateProducto(idProducto, producto.getNombre(), producto.getCostoBodega(), producto.getPrecioUnitario(), producto.getPresentacion(), producto.getCantidad(), producto.getUnidadMedida().name(), producto.getVolumenEmpaque(), producto.getPesoEmpaque(), producto.getFechaVencimiento(), producto.getCategoria().getId());
         }
         catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al actualizar el producto");

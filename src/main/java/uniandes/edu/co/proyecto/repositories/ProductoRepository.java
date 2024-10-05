@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uniandes.edu.co.proyecto.entities.Producto;
-import uniandes.edu.co.proyecto.enumerations.UnidadMedida;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
-    @Query(value = "SELECT * FROM producto", nativeQuery = true)
+    @Query(value = "SELECT * FROM producto ORDER BY producto.id", nativeQuery = true)
     List<Producto> findAllProductos();
 
     @Query(value = "SELECT * FROM producto WHERE id = :idProducto", nativeQuery = true)  
@@ -29,7 +28,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
                         @Param("precioUnitario") double precioUnitario,
                         @Param("presentacion") String presentacion,
                         @Param("cantidad") Integer cantidad,
-                        @Param("unidadMedida") UnidadMedida unidadMedida,
+                        @Param("unidadMedida") String unidadMedida,
                         @Param("volumenEmpaque") double volumenEmpaque,
                         @Param("pesoEmpaque") double pesoEmpaque,
                         @Param("fechaVencimiento") LocalDate fechaVencimiento,
@@ -45,7 +44,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
                         @Param("precioUnitario") double precioUnitario,
                         @Param("presentacion") String presentacion,
                         @Param("cantidad") Integer cantidad,
-                        @Param("unidadMedida") UnidadMedida unidadMedida,
+                        @Param("unidadMedida") String unidadMedida,
                         @Param("volumenEmpaque") double volumenEmpaque,
                         @Param("pesoEmpaque") double pesoEmpaque,
                         @Param("fechaVencimiento") LocalDate fechaVencimiento,
