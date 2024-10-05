@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uniandes.edu.co.proyecto.entities.Producto;
+import uniandes.edu.co.proyecto.enumerations.UnidadMedida;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +29,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
                         @Param("precioUnitario") double precioUnitario,
                         @Param("presentacion") String presentacion,
                         @Param("cantidad") Integer cantidad,
-                        @Param("unidadMedida") String unidadMedida,
+                        @Param("unidadMedida") UnidadMedida unidadMedida,
                         @Param("volumenEmpaque") double volumenEmpaque,
                         @Param("pesoEmpaque") double pesoEmpaque,
                         @Param("fechaVencimiento") LocalDate fechaVencimiento,
@@ -37,16 +38,17 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     
     @Modifying
     @Transactional
-    @Query(value = "UPDATE producto SET nombre = :nombre, costobodega = :costoBodega, preciounitario = :precioUnitario, presentacion = :presentacion, cantidad = :cantidad, unidadmedida = :unidadMedida, volumenempaque = :volumenEmpaque, pesoempaque = :pesoEmpaque, categoria_id = :idCategoria WHERE id = :idProducto", nativeQuery = true)
+    @Query(value = "UPDATE producto SET nombre = :nombre, costobodega = :costoBodega, preciounitario = :precioUnitario, presentacion = :presentacion, cantidad = :cantidad, unidadmedida = :unidadMedida, volumenempaque = :volumenEmpaque, pesoempaque = :pesoEmpaque, fechaexpiracion = :fechaVencimiento, categoria_id = :idCategoria WHERE id = :idProducto", nativeQuery = true)
     void updateProducto(@Param("idProducto") Long idProducto,
                         @Param("nombre") String nombre,
                         @Param("costoBodega") double costoBodega,
                         @Param("precioUnitario") double precioUnitario,
                         @Param("presentacion") String presentacion,
                         @Param("cantidad") Integer cantidad,
-                        @Param("unidadMedida") String unidadMedida,
+                        @Param("unidadMedida") UnidadMedida unidadMedida,
                         @Param("volumenEmpaque") double volumenEmpaque,
                         @Param("pesoEmpaque") double pesoEmpaque,
+                        @Param("fechaVencimiento") LocalDate fechaVencimiento,
                         @Param("idCategoria") Long idCategoria);
 
     @Modifying

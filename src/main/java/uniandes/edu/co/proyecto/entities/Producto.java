@@ -1,12 +1,16 @@
 package uniandes.edu.co.proyecto.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import java.time.LocalDate;
 import lombok.Data;
+import uniandes.edu.co.proyecto.enumerations.UnidadMedida;
+
 
 @Entity
 @Data
@@ -28,8 +32,9 @@ public class Producto extends BaseEntity {
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
 
+    @Enumerated(EnumType.STRING) 
     @Column(name = "unidadmedida", nullable = false)
-    private String unidadMedida;
+    private UnidadMedida unidadMedida;
 
     @Column(name = "volumenempaque", nullable = false)
     private double volumenEmpaque;

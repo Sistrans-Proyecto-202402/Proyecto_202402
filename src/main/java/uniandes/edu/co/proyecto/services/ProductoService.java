@@ -8,6 +8,7 @@ import uniandes.edu.co.proyecto.entities.Producto;
 import uniandes.edu.co.proyecto.repositories.ProductoRepository;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class ProductoService {
@@ -31,12 +32,48 @@ public class ProductoService {
 
     public void insertProducto(Producto producto) {
 
+        if (producto.getNombre().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre del producto no puede estar vacío");
+        }
+
+        if (producto.getCostoBodega() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El costo de bodega del producto debe ser mayor a cero");
+        }
+
+        if (producto.getPrecioUnitario() < producto.getCostoBodega()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio unitario del producto debe ser mayor al costo de bodega");
+        }
+
+        if (producto.getPresentacion().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La presentación del producto no puede estar vacía");
+        }
+
+        if (producto.getCantidad() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La cantidad de la presentacion del producto debe ser mayor a cero");
+        }
+
+        if (producto.getVolumenEmpaque() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El volumen de empaque del producto debe ser mayor a cero");
+        }
+
+        if (producto.getPesoEmpaque() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El peso de empaque del producto debe ser mayor a cero");
+        }
+
         if ((producto.getCategoria().getId() == 1) && (producto.getFechaVencimiento() == null)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos de la categoría perecederos deben tener fecha de vencimiento");
         }
 
         if ((producto.getCategoria().getId() != 1) && (producto.getFechaVencimiento() != null)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos distintos a la categoría perecederos no deben tener fecha de vencimiento");
+        }
+
+        if ((producto.getCategoria().getId() == 1) && (producto.getFechaVencimiento().isBefore(LocalDate.now()))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La fecha de vencimiento del producto no puede ser anterior a la fecha actual");
+        }
+
+        if (producto.getCodigoBarras().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El código de barras del producto no puede estar vacío");
         }
 
         try {
@@ -53,6 +90,34 @@ public class ProductoService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto no se encuentra registrado");
         } 
 
+        if (producto.getNombre().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre del producto no puede estar vacío");
+        }
+
+        if (producto.getCostoBodega() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El costo de bodega del producto debe ser mayor a cero");
+        }
+
+        if (producto.getPrecioUnitario() <= producto.getCostoBodega()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio unitario del producto debe ser mayor al costo de bodega");
+        }
+
+        if (producto.getPresentacion().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La presentación del producto no puede estar vacía");
+        }
+
+        if (producto.getCantidad() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La cantidad de la presentacion del producto debe ser mayor a cero");
+        }
+
+        if (producto.getVolumenEmpaque() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El volumen de empaque del producto debe ser mayor a cero");
+        }
+
+        if (producto.getPesoEmpaque() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El peso de empaque del producto debe ser mayor a cero");
+        }
+
         if ((producto.getCategoria().getId() == 1) && (producto.getFechaVencimiento() == null)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos de la categoría perecederos deben tener fecha de vencimiento");
         }
@@ -61,8 +126,12 @@ public class ProductoService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los productos distintos a la categoría perecederos no deben tener fecha de vencimiento");
         }
 
+        if ((producto.getCategoria().getId() == 1) && (producto.getFechaVencimiento().isBefore(LocalDate.now()))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La fecha de vencimiento del producto no puede ser anterior a la fecha actual");
+        }
+
         try {
-            productoRepository.updateProducto(idProducto, producto.getNombre(), producto.getCostoBodega(), producto.getPrecioUnitario(), producto.getPresentacion(), producto.getCantidad(), producto.getUnidadMedida(), producto.getVolumenEmpaque(), producto.getPesoEmpaque(), producto.getCategoria().getId());
+            productoRepository.updateProducto(idProducto, producto.getNombre(), producto.getCostoBodega(), producto.getPrecioUnitario(), producto.getPresentacion(), producto.getCantidad(), producto.getUnidadMedida(), producto.getVolumenEmpaque(), producto.getPesoEmpaque(), producto.getFechaVencimiento(), producto.getCategoria().getId());
         }
         catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al actualizar el producto");
