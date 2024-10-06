@@ -5,8 +5,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.time.LocalDate;
 import lombok.Data;
+import uniandes.edu.co.proyecto.enumerations.EstadoOrden;
 
 @Entity
 @Data
@@ -22,8 +25,9 @@ public class OrdenCompra extends BaseEntity {
     @Column(name = "fecharecepcion")
     private LocalDate fechaRecepcion;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
-    private String estado;
+    private EstadoOrden estado;
 
     @ManyToOne
     @JoinColumn(name = "proveedor_id", nullable = false)

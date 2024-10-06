@@ -24,7 +24,6 @@ public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Long> 
     @Query(value = "INSERT INTO ordencompra (fechacreacion, fechaentrega, fecharecepcion, estado, proveedor_id, sucursal_id, bodega_id) VALUES (:fechaCreacion, :fechaEntrega, :fechaRecepcion, :estado, :idProveedor, :idSucursal, :idBodega)", nativeQuery = true)
     void insertOrdenCompra(@Param("fechaCreacion") LocalDate fechaCreacion,
                            @Param("fechaEntrega") LocalDate fechaEntrega,
-                           @Param("fechaRecepcion") LocalDate fechaRecepcion,
                            @Param("estado") String estado,
                            @Param("idProveedor") Long idProveedor,
                            @Param("idSucursal") Long idSucursal,
@@ -32,14 +31,19 @@ public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Long> 
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE ordencompra SET fechaentrega = :fechaEntrega, fecharecepcion = :fechaRecepcion, estado = :estado, proveedor_id = :idProveedor, sucursal_id = :idSucursal, bodega_id = :idBodega WHERE id = :idOrdenCompra", nativeQuery = true)
+    @Query(value = "UPDATE ordencompra SET fechaentrega = :fechaEntrega, proveedor_id = :idProveedor, sucursal_id = :idSucursal, bodega_id = :idBodega WHERE id = :idOrdenCompra", nativeQuery = true)
     void updateOrdenCompra(@Param("idOrdenCompra") Long idOrdenCompra,
                            @Param("fechaEntrega") LocalDate fechaEntrega,
-                           @Param("fechaRecepcion") LocalDate fechaRecepcion,
-                           @Param("estado") String estado,
                            @Param("idProveedor") Long idProveedor,
                            @Param("idSucursal") Long idSucursal,
                            @Param("idBodega") Long idBodega);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE ordencompra SET estado = :estado, fecharecepcion = :fechaRecepcion WHERE id = :idOrdenCompra", nativeQuery = true)
+    void updateEstadoOrdenCompra(@Param("idOrdenCompra") Long idOrdenCompra,
+                                 @Param("estado") String estado,
+                                 @Param("fechaRecepcion") LocalDate fechaRecepcion);
 
     @Modifying
     @Transactional
