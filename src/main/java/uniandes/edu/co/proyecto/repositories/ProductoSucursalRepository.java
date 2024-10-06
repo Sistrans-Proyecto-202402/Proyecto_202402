@@ -28,10 +28,10 @@ public interface ProductoSucursalRepository extends JpaRepository<ProductoSucurs
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE productosucursal SET cantidad = :cantidad WHERE sucursal_id = :idSucursal AND producto_id = :idProducto", nativeQuery = true)
+    @Query(value = "UPDATE productosucursal SET cantidadminima = :cantidadMinima WHERE sucursal_id = :idSucursal AND producto_id = :idProducto", nativeQuery = true)
     void updateProductoSucursal(@Param("idSucursal") Long idSucursal,
                                 @Param("idProducto") Long idProducto,
-                                @Param("cantidad") Integer cantidad);
+                                @Param("cantidadMinima") Integer cantidadMinima);
 
     @Modifying
     @Transactional

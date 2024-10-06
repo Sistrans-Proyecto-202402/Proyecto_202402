@@ -48,7 +48,7 @@ public class ProductoSucursalService {
         List<Long> bodegas = bodegaRepository.findBodegasBySucursal(productoSucursal.getId().getSucursal().getId());
 
         if (bodegas.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La sucursal no tiene bodegas registradas");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La sucursal no se encuentra registrada o no tiene bodegas asociadas");
         }
 
         try {
@@ -71,7 +71,7 @@ public class ProductoSucursalService {
     public void updateProductoSucursal(Long idProducto, Long idSucursal, ProductoSucursal productoSucursal) {
 
         if (productoSucursalRepository.findProductoSucursalById(idSucursal, idProducto).isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto no se encuentra registrado en la sucursal");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto no se encuentra registrado en la sucursal");
         }
 
         if (productoSucursal.getCantidadMinima() <= 0) {

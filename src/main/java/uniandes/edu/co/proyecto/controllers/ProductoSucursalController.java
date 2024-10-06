@@ -30,13 +30,13 @@ public class ProductoSucursalController {
     @PostMapping("/insert")
     public ResponseEntity<String> insertProductoSucursal(@RequestBody ProductoSucursal productoSucursal) {
         productoSucursalService.insertProductoSucursal(productoSucursal);
-        return ResponseEntity.status(HttpStatus.CREATED).body("El producto '" + productoSucursal.getId().getProducto().getNombre() + "' ha sido agregado a la sucursal '" + productoSucursal.getId().getSucursal().getNombre() + "' correctamente");
+        return ResponseEntity.status(HttpStatus.CREATED).body("El producto ha sido registrado en la sucursal correctamente");
     }
 
     @PutMapping("/{idProducto}/{idSucursal}/update")
     public ResponseEntity<String> updateProductoSucursal(@PathVariable Long idProducto, @PathVariable Long idSucursal, @RequestBody ProductoSucursal productoSucursal) {
         productoSucursalService.updateProductoSucursal(idProducto, idSucursal, productoSucursal);
-        return ResponseEntity.status(HttpStatus.OK).body("El producto '" + productoSucursal.getId().getProducto().getNombre() + "' ha sido actualizado en la sucursal '" + productoSucursal.getId().getSucursal().getNombre() + "' correctamente");
+        return ResponseEntity.status(HttpStatus.OK).body("El producto ha sido actualizado en la sucursal correctamente");
     }
 
     @DeleteMapping("/{idProducto}/{idSucursal}/delete")
