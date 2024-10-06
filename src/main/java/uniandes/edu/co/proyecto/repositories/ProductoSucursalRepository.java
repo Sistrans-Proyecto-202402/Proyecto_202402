@@ -21,10 +21,10 @@ public interface ProductoSucursalRepository extends JpaRepository<ProductoSucurs
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO productosucursal (sucursal_id, producto_id, cantidad) VALUES (:idSucursal, :idProducto, :cantidad)", nativeQuery = true)
+    @Query(value = "INSERT INTO productosucursal (sucursal_id, producto_id, cantidadminima) VALUES (:idSucursal, :idProducto, :cantidadMinima)", nativeQuery = true)
     void insertProductoSucursal(@Param("idSucursal") Long idSucursal,
                                 @Param("idProducto") Long idProducto,
-                                @Param("cantidad") Integer cantidad);
+                                @Param("cantidadMinima") Integer cantidadMinima);
 
     @Modifying
     @Transactional

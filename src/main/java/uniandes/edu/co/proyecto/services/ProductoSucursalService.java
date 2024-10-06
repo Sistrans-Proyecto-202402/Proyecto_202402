@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import jakarta.transaction.Transactional;
 import uniandes.edu.co.proyecto.entities.ProductoSucursal;
 import uniandes.edu.co.proyecto.repositories.BodegaProductoRepository;
 import uniandes.edu.co.proyecto.repositories.BodegaRepository;
@@ -31,12 +32,13 @@ public class ProductoSucursalService {
         Optional<ProductoSucursal> productoSucursal = productoSucursalRepository.findProductoSucursalById(idSucursal, idProducto);
 
         if (productoSucursal.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto de la sucursal no se encuentra registrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto no se encuentra registrado en la sucursal");
         }
 
         return productoSucursal.get();
     }
 
+    @Transactional
     public void insertProductoSucursal(ProductoSucursal productoSucursal) {
 
         if (productoSucursal.getCantidadMinima() <= 0) {
@@ -49,6 +51,13 @@ public class ProductoSucursalService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La sucursal no tiene bodegas registradas");
         }
 
+        try {
+            productoSucursalRepository.insertProductoSucursal(productoSucursal.getId().getSucursal().getId(), productoSucursal.getId().getProducto().getId(), productoSucursal.getCantidadMinima());
+        } 
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al registrar el producto en la sucursal");
+        }
+
         for (Long idBodega : bodegas) {
             try {
                 bodegaProductoRepository.insertBodegaProducto(idBodega, productoSucursal.getId().getProducto().getId(), 0, 0.0, 20000);
@@ -57,16 +66,13 @@ public class ProductoSucursalService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto ya se encuentra registrado en la bodega de la sucursal");
             }
         }
-
-        try {
-            productoSucursalRepository.insertProductoSucursal(productoSucursal.getId().getProducto().getId(), productoSucursal.getId().getSucursal().getId(), productoSucursal.getCantidadMinima());
-        } 
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto ya se encuentra registrado en la sucursal");
-        }
     }
 
     public void updateProductoSucursal(Long idProducto, Long idSucursal, ProductoSucursal productoSucursal) {
+
+        if (productoSucursalRepository.findProductoSucursalById(idSucursal, idProducto).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto no se encuentra registrado en la sucursal");
+        }
 
         if (productoSucursal.getCantidadMinima() <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La cantidad mínima del producto en la sucursal debe ser mayor a cero");
@@ -76,16 +82,21 @@ public class ProductoSucursalService {
             productoSucursalRepository.updateProductoSucursal(idSucursal, idProducto, productoSucursal.getCantidadMinima());
         } 
         catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto de la sucursal no se encuentra registrado");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al actualizar el producto de la sucursal");
         }
     }
 
     public void deleteProductoSucursal(Long idProducto, Long idSucursal) {
+
+        if (productoSucursalRepository.findProductoSucursalById(idSucursal, idProducto).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto no se encuentra registrado en la sucursal");
+        }
+
         try {
             productoSucursalRepository.deleteProductoSucursal(idSucursal, idProducto);
         } 
         catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto de la sucursal no se encuentra registrado");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar el producto de la sucursal");
         }
     }
 }
