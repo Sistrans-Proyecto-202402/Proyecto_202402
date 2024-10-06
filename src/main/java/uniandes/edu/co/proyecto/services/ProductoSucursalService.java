@@ -23,8 +23,8 @@ public class ProductoSucursalService {
     @Autowired
     private BodegaProductoRepository bodegaProductoRepository;
 
-    public List<ProductoSucursal> findAllProductosSucursal() {
-        return productoSucursalRepository.findAllProductosSucursal();
+    public List<ProductoSucursal> findAllProductosSucursales() {
+        return productoSucursalRepository.findAllProductosSucursales();
     }
 
     public ProductoSucursal findProductoSucursalById(Long idProducto, Long idSucursal) {

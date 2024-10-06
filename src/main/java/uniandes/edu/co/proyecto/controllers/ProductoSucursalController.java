@@ -16,8 +16,8 @@ public class ProductoSucursalController {
     private ProductoSucursalService productoSucursalService;
 
     @GetMapping
-    public ResponseEntity<List<ProductoSucursal>> findAllProductosSucursal() {
-        List<ProductoSucursal> productosSucursal = productoSucursalService.findAllProductosSucursal();
+    public ResponseEntity<List<ProductoSucursal>> findAllProductosSucursales() {
+        List<ProductoSucursal> productosSucursal = productoSucursalService.findAllProductosSucursales();
         return ResponseEntity.status(HttpStatus.OK).body(productosSucursal);
     }
 
