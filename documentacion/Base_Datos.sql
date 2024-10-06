@@ -118,22 +118,23 @@ CREATE TABLE sucursal (
 ALTER TABLE sucursal ADD CONSTRAINT sucursal_pk PRIMARY KEY ( id );
 
 -- Relacionando las tablas
-ALTER TABLE bodega ADD CONSTRAINT bodega_sucursal_fk FOREIGN KEY ( sucursal_id ) REFERENCES sucursal ( id );
-ALTER TABLE bodegaproducto ADD CONSTRAINT bodegaproducto_bodega_fk FOREIGN KEY ( bodega_id ) REFERENCES bodega ( id );
-ALTER TABLE bodegaproducto ADD CONSTRAINT bodegaproducto_producto_fk FOREIGN KEY ( producto_id ) REFERENCES producto ( id );
-ALTER TABLE ordencompra ADD CONSTRAINT ordencompra_bodega_fk FOREIGN KEY ( bodega_id ) REFERENCES bodega ( id );
-ALTER TABLE ordencompra ADD CONSTRAINT ordencompra_proveedor_fk FOREIGN KEY ( proveedor_id ) REFERENCES proveedor ( id );
-ALTER TABLE ordencompra ADD CONSTRAINT ordencompra_sucursal_fk FOREIGN KEY ( sucursal_id ) REFERENCES sucursal ( id );
-ALTER TABLE ordenproducto ADD CONSTRAINT ordenproducto_ordencompra_fk FOREIGN KEY ( ordencompra_id ) REFERENCES ordencompra ( id );
-ALTER TABLE ordenproducto ADD CONSTRAINT ordenproducto_producto_fk FOREIGN KEY ( producto_id ) REFERENCES producto ( id );
-ALTER TABLE producto ADD CONSTRAINT producto_categoria_fk FOREIGN KEY ( categoria_id ) REFERENCES categoria ( id );
-ALTER TABLE productosucursal ADD CONSTRAINT productosucursal_producto_fk FOREIGN KEY ( producto_id ) REFERENCES producto ( id );
-ALTER TABLE productosucursal ADD CONSTRAINT productosucursal_sucursal_fk FOREIGN KEY ( sucursal_id ) REFERENCES sucursal ( id );
-ALTER TABLE proveedorproducto ADD CONSTRAINT proveedorproducto_producto_fk FOREIGN KEY ( producto_id ) REFERENCES producto ( id );
-ALTER TABLE proveedorproducto ADD CONSTRAINT proveedorproducto_proveedor_fk FOREIGN KEY ( proveedor_id ) REFERENCES proveedor ( id );
-ALTER TABLE proveedorsucursal ADD CONSTRAINT proveedorsucursal_proveedor_fk FOREIGN KEY ( proveedor_id ) REFERENCES proveedor ( id );
-ALTER TABLE proveedorsucursal ADD CONSTRAINT proveedorsucursal_sucursal_fk FOREIGN KEY ( sucursal_id ) REFERENCES sucursal ( id );
-ALTER TABLE sucursal ADD CONSTRAINT sucursal_ciudad_fk FOREIGN KEY ( ciudad_id ) REFERENCES ciudad ( id );
+ALTER TABLE bodega ADD CONSTRAINT bodega_sucursal_fk FOREIGN KEY (sucursal_id) REFERENCES sucursal (id) ON DELETE CASCADE;
+ALTER TABLE bodegaproducto ADD CONSTRAINT bodegaproducto_bodega_fk FOREIGN KEY (bodega_id) REFERENCES bodega (id) ON DELETE CASCADE;
+ALTER TABLE bodegaproducto ADD CONSTRAINT bodegaproducto_producto_fk FOREIGN KEY (producto_id) REFERENCES producto (id) ON DELETE CASCADE;
+ALTER TABLE ordencompra ADD CONSTRAINT ordencompra_bodega_fk FOREIGN KEY (bodega_id) REFERENCES bodega (id) ON DELETE CASCADE;
+ALTER TABLE ordencompra ADD CONSTRAINT ordencompra_proveedor_fk FOREIGN KEY (proveedor_id) REFERENCES proveedor (id) ON DELETE CASCADE;
+ALTER TABLE ordencompra ADD CONSTRAINT ordencompra_sucursal_fk FOREIGN KEY (sucursal_id) REFERENCES sucursal (id) ON DELETE CASCADE;
+ALTER TABLE ordenproducto ADD CONSTRAINT ordenproducto_ordencompra_fk FOREIGN KEY (ordencompra_id) REFERENCES ordencompra (id) ON DELETE CASCADE;
+ALTER TABLE ordenproducto ADD CONSTRAINT ordenproducto_producto_fk FOREIGN KEY (producto_id) REFERENCES producto (id) ON DELETE CASCADE;
+ALTER TABLE producto ADD CONSTRAINT producto_categoria_fk FOREIGN KEY (categoria_id) REFERENCES categoria (id) ON DELETE CASCADE;
+ALTER TABLE productosucursal ADD CONSTRAINT productosucursal_producto_fk FOREIGN KEY (producto_id) REFERENCES producto (id) ON DELETE CASCADE;
+ALTER TABLE productosucursal ADD CONSTRAINT productosucursal_sucursal_fk FOREIGN KEY (sucursal_id) REFERENCES sucursal (id) ON DELETE CASCADE;
+ALTER TABLE proveedorproducto ADD CONSTRAINT proveedorproducto_producto_fk FOREIGN KEY (producto_id) REFERENCES producto (id) ON DELETE CASCADE;
+ALTER TABLE proveedorproducto ADD CONSTRAINT proveedorproducto_proveedor_fk FOREIGN KEY (proveedor_id) REFERENCES proveedor (id) ON DELETE CASCADE;
+ALTER TABLE proveedorsucursal ADD CONSTRAINT proveedorsucursal_proveedor_fk FOREIGN KEY (proveedor_id) REFERENCES proveedor (id) ON DELETE CASCADE;
+ALTER TABLE proveedorsucursal ADD CONSTRAINT proveedorsucursal_sucursal_fk FOREIGN KEY (sucursal_id) REFERENCES sucursal (id) ON DELETE CASCADE;
+ALTER TABLE sucursal ADD CONSTRAINT sucursal_ciudad_fk FOREIGN KEY (ciudad_id) REFERENCES ciudad (id) ON DELETE CASCADE;
+
 
 -- Restricciones de las tablas
 -- Unique
@@ -145,6 +146,9 @@ ALTER TABLE proveedor ADD CONSTRAINT unique_proveedor_nit UNIQUE (nit);
 ALTER TABLE proveedor ADD CONSTRAINT unique_proveedor_nombre UNIQUE (nombre);
 ALTER TABLE proveedor ADD CONSTRAINT unique_proveedor_telefonocontacto UNIQUE (telefonocontacto);
 ALTER TABLE sucursal ADD CONSTRAINT unique_sucursal_telefono UNIQUE (telefono);
+ALTER TABLE ordencompra ADD CONSTRAINT unique_ordencompra UNIQUE (fechacreacion, fechaentrega, proveedor_id, sucursal_id, bodega_id);
+ALTER TABLE bodega ADD CONSTRAINT unique_bodega_nombre_sucursal UNIQUE (nombre, sucursal_id);
+ALTER TABLE sucursal ADD CONSTRAINT unique_sucursal_nombre_ciudad UNIQUE (nombre, ciudad_id);
 
 -- Población de tabla categoría
 INSERT INTO categoria (nombre, descripcion, caracteristicas)

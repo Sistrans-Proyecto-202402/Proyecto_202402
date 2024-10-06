@@ -19,6 +19,9 @@ public interface OrdenProductoRepository extends JpaRepository<OrdenProducto, Or
     @Query(value = "SELECT * FROM ordenproducto WHERE ordencompra_id = :idOrdenCompra AND producto_id = :idProducto", nativeQuery = true)
     Optional<OrdenProducto> findOrdenProductoById(@Param("idOrdenCompra") Long idOrdenCompra, @Param("idProducto") Long idProducto);
 
+    @Query(value = "SELECT * FROM ordenproducto op WHERE op.ordencompra_id = :idOrdenCompra", nativeQuery = true)
+    List<OrdenProducto> findProductosOrdenCompra(@Param("idOrdenCompra") Long idOrdenCompra);
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO ordenproducto (ordencompra_id, producto_id, cantidad, precio) VALUES (:idOrdenCompra, :idProducto, :cantidad, :precio)", nativeQuery = true)

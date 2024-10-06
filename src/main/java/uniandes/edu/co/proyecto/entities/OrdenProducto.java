@@ -18,6 +18,6 @@ public class OrdenProducto {
     private Integer cantidad;
 
     @Column(name = "precio", nullable = false)
-    private Double precio;
+    private double precio;
 }
 

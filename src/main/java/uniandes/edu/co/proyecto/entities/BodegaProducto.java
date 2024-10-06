@@ -18,7 +18,7 @@ public class BodegaProducto {
     private Integer existencias;
 
     @Column(name = "preciopromedio", nullable = false)
-    private Double precioPromedio;
+    private double precioPromedio;
 
     @Column(name = "capacidad", nullable = false)
     private Integer capacidad;

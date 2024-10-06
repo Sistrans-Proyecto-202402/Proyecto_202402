@@ -19,9 +19,17 @@ public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Long> 
     @Query(value = "SELECT * FROM ordencompra WHERE id = :idOrdenCompra", nativeQuery = true)
     Optional<OrdenCompra> findOrdenCompraById(@Param("idOrdenCompra") Long idOrdenCompra);
 
+    @Query(value = "SELECT id FROM ordencompra WHERE fechaCreacion = :fechaCreacion AND fechaEntrega = :fechaEntrega AND estado = :estado AND proveedor_id = :idProveedor AND sucursal_id = :idSucursal AND bodega_id = :idBodega", nativeQuery = true)
+    Optional<Long> findOrdenCompraByAttributes(@Param("fechaCreacion") LocalDate fechaCreacion,
+                                               @Param("fechaEntrega") LocalDate fechaEntrega,
+                                               @Param("estado") String estado,
+                                               @Param("idProveedor") Long idProveedor,
+                                               @Param("idSucursal") Long idSucursal,
+                                               @Param("idBodega") Long idBodega);
+
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO ordencompra (fechacreacion, fechaentrega, fecharecepcion, estado, proveedor_id, sucursal_id, bodega_id) VALUES (:fechaCreacion, :fechaEntrega, :fechaRecepcion, :estado, :idProveedor, :idSucursal, :idBodega)", nativeQuery = true)
+    @Query(value = "INSERT INTO ordencompra (fechacreacion, fechaentrega, estado, proveedor_id, sucursal_id, bodega_id) VALUES (:fechaCreacion, :fechaEntrega, :estado, :idProveedor, :idSucursal, :idBodega)", nativeQuery = true)
     void insertOrdenCompra(@Param("fechaCreacion") LocalDate fechaCreacion,
                            @Param("fechaEntrega") LocalDate fechaEntrega,
                            @Param("estado") String estado,
@@ -31,12 +39,9 @@ public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Long> 
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE ordencompra SET fechaentrega = :fechaEntrega, proveedor_id = :idProveedor, sucursal_id = :idSucursal, bodega_id = :idBodega WHERE id = :idOrdenCompra", nativeQuery = true)
+    @Query(value = "UPDATE ordencompra SET fechaentrega = :fechaEntrega WHERE id = :idOrdenCompra", nativeQuery = true)
     void updateOrdenCompra(@Param("idOrdenCompra") Long idOrdenCompra,
-                           @Param("fechaEntrega") LocalDate fechaEntrega,
-                           @Param("idProveedor") Long idProveedor,
-                           @Param("idSucursal") Long idSucursal,
-                           @Param("idBodega") Long idBodega);
+                           @Param("fechaEntrega") LocalDate fechaEntrega);
 
     @Modifying
     @Transactional
