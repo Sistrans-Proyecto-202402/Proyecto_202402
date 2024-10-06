@@ -9,7 +9,7 @@ import uniandes.edu.co.proyecto.services.ProductoSucursalService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/productosucursal")
+@RequestMapping("/productossucursales")
 public class ProductoSucursalController {
 
     @Autowired

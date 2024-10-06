@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface BodegaProductoRepository extends JpaRepository<BodegaProducto, BodegaProductoPK> {
     
-    @Query(value = "SELECT * FROM bodegaproducto ORDER BY bodegaproducto.id", nativeQuery = true)
+    @Query(value = "SELECT * FROM bodegaproducto ORDER BY bodegaproducto.bodega_id", nativeQuery = true)
     List<BodegaProducto> findAllBodegaProductos();
 
     @Query(value = "SELECT * FROM bodegaproducto WHERE bodega_id = :idBodega AND producto_id = :idProducto", nativeQuery = true)

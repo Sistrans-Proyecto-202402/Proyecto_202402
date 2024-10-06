@@ -13,7 +13,7 @@ import uniandes.edu.co.proyecto.entities.ProveedorSucursalPK;
 @Repository
 public interface ProveedorSucursalRepository extends JpaRepository<ProveedorSucursal, ProveedorSucursalPK> {
     
-    @Query(value = "SELECT * FROM proveedorsucursal ORDER BY proveedorsucursal.id", nativeQuery = true)
+    @Query(value = "SELECT * FROM proveedorsucursal ORDER BY proveedorsucursal.sucursal_id", nativeQuery = true)
     List<ProveedorSucursal> findAllProveedorSucursales();
 
     @Query(value = "SELECT * FROM proveedorsucursal WHERE sucursal_id = :sucursalId AND proveedor_id = :proveedorId", nativeQuery = true)
