@@ -233,6 +233,10 @@ public class OrdenCompraService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La orden de compra no puede ser eliminada porque ya ha sido entregada");
         }
 
+        if (ordenCompra.get().getEstado().name().equals("Vigente")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La orden de compra no puede ser eliminada porque aún sigue vigente");
+        }
+
         try {
             ordenCompraRepository.deleteOrdenCompra(idOrdenCompra);
         }
