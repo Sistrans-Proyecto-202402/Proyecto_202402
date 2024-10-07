@@ -13,11 +13,14 @@ import uniandes.edu.co.proyecto.entities.ProveedorProductoPK;
 @Repository
 public interface ProveedorProductoRepository extends JpaRepository<ProveedorProducto, ProveedorProductoPK> {
     
-    @Query(value = "SELECT * FROM proveedorproducto ORDER BY proveedorproducto.id", nativeQuery = true)
+    @Query(value = "SELECT * FROM proveedorproducto ORDER BY proveedorproducto.proveedor_id", nativeQuery = true)
     List<ProveedorProducto> findAllProveedorProductos();
 
     @Query(value = "SELECT * FROM proveedorproducto WHERE producto_id = :productoId AND proveedor_id = :proveedorId", nativeQuery = true)
     Optional<ProveedorProducto> findProveedorProductoById(@Param("productoId") Long productoId, @Param("proveedorId") Long proveedorId);
+
+    @Query(value = "SELECT pp.proveedor_id FROM proveedorproducto pp WHERE pp.producto_id = :productoId", nativeQuery = true)
+    List<Long> findProveedoresByProducto(@Param("productoId") Long productoId);
 
     @Modifying
     @Transactional

@@ -13,25 +13,28 @@ import java.util.*;
 @Repository
 public interface ProductoSucursalRepository extends JpaRepository<ProductoSucursal, ProductoSucursalPK> {
 
-    @Query(value = "SELECT * FROM productosucursal ORDER BY productosucursal.id", nativeQuery = true)
-    List<ProductoSucursal> findAllProductosSucursal();
+    @Query(value = "SELECT * FROM productosucursal ORDER BY productosucursal.sucursal_id", nativeQuery = true)
+    List<ProductoSucursal> findAllProductosSucursales();
 
     @Query(value = "SELECT * FROM productosucursal WHERE sucursal_id = :idSucursal AND producto_id = :idProducto", nativeQuery = true)
     Optional<ProductoSucursal> findProductoSucursalById(@Param("idSucursal") Long idSucursal, @Param("idProducto") Long idProducto);
 
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO productosucursal (sucursal_id, producto_id, cantidad) VALUES (:idSucursal, :idProducto, :cantidad)", nativeQuery = true)
-    void insertProductoSucursal(@Param("idSucursal") Long idSucursal,
-                                @Param("idProducto") Long idProducto,
-                                @Param("cantidad") Integer cantidad);
+    @Query(value = "SELECT ps.sucursal_id FROM productosucursal ps WHERE ps.producto_id = :idProducto", nativeQuery = true)
+    List<Long> findSucursalesByProducto(@Param("idProducto") Long idProducto);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE productosucursal SET cantidad = :cantidad WHERE sucursal_id = :idSucursal AND producto_id = :idProducto", nativeQuery = true)
+    @Query(value = "INSERT INTO productosucursal (sucursal_id, producto_id, cantidadminima) VALUES (:idSucursal, :idProducto, :cantidadMinima)", nativeQuery = true)
+    void insertProductoSucursal(@Param("idSucursal") Long idSucursal,
+                                @Param("idProducto") Long idProducto,
+                                @Param("cantidadMinima") Integer cantidadMinima);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE productosucursal SET cantidadminima = :cantidadMinima WHERE sucursal_id = :idSucursal AND producto_id = :idProducto", nativeQuery = true)
     void updateProductoSucursal(@Param("idSucursal") Long idSucursal,
                                 @Param("idProducto") Long idProducto,
-                                @Param("cantidad") Integer cantidad);
+                                @Param("cantidadMinima") Integer cantidadMinima);
 
     @Modifying
     @Transactional

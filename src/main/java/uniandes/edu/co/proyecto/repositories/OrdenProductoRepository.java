@@ -13,11 +13,14 @@ import java.util.*;
 @Repository
 public interface OrdenProductoRepository extends JpaRepository<OrdenProducto, OrdenProductoPK> {
 
-    @Query(value = "SELECT * FROM ordenproducto ORDER BY ordenproducto.id", nativeQuery = true)
-    List<OrdenProducto> findAllOrdenesProducto();
+    @Query(value = "SELECT * FROM ordenproducto ORDER BY ordenproducto.ordencompra_id", nativeQuery = true)
+    List<OrdenProducto> findAllOrdenesProductos();
 
     @Query(value = "SELECT * FROM ordenproducto WHERE ordencompra_id = :idOrdenCompra AND producto_id = :idProducto", nativeQuery = true)
     Optional<OrdenProducto> findOrdenProductoById(@Param("idOrdenCompra") Long idOrdenCompra, @Param("idProducto") Long idProducto);
+
+    @Query(value = "SELECT * FROM ordenproducto op WHERE op.ordencompra_id = :idOrdenCompra", nativeQuery = true)
+    List<OrdenProducto> findProductosOrdenCompra(@Param("idOrdenCompra") Long idOrdenCompra);
 
     @Modifying
     @Transactional
