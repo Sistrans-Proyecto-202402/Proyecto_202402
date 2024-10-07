@@ -8,7 +8,6 @@ import uniandes.edu.co.proyecto.entities.Producto;
 import uniandes.edu.co.proyecto.repositories.ProductoRepository;
 import uniandes.edu.co.proyecto.repositories.ProductoSucursalRepository;
 import uniandes.edu.co.proyecto.repositories.ProveedorProductoRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
