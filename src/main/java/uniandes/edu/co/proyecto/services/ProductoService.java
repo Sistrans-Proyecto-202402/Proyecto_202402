@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import uniandes.edu.co.proyecto.entities.Producto;
 import uniandes.edu.co.proyecto.repositories.ProductoRepository;
+import uniandes.edu.co.proyecto.repositories.ProductoSucursalRepository;
+import uniandes.edu.co.proyecto.repositories.ProveedorProductoRepository;
+
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
@@ -15,6 +18,12 @@ public class ProductoService {
 
     @Autowired
     private ProductoRepository productoRepository;
+
+    @Autowired
+    private ProductoSucursalRepository productoSucursalRepository;
+
+    @Autowired
+    private ProveedorProductoRepository proveedorProductoRepository;
 
     public List<Producto> findAllProductos() {
         return productoRepository.findAllProductos();
@@ -142,6 +151,14 @@ public class ProductoService {
 
         if (productoRepository.findProductoById(idProducto).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto no se encuentra registrado");
+        }
+
+        if (!productoSucursalRepository.findSucursalesByProducto(idProducto).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto se encuentra registrado en al menos una sucursal");
+        }
+
+        if (!proveedorProductoRepository.findProveedoresByProducto(idProducto).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto se encuentra registrado en al menos un proveedor");
         }
         
         try {
