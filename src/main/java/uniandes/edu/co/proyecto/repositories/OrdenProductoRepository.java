@@ -14,7 +14,7 @@ import java.util.*;
 public interface OrdenProductoRepository extends JpaRepository<OrdenProducto, OrdenProductoPK> {
 
     @Query(value = "SELECT * FROM ordenproducto ORDER BY ordenproducto.ordencompra_id", nativeQuery = true)
-    List<OrdenProducto> findAllOrdenesProducto();
+    List<OrdenProducto> findAllOrdenesProductos();
 
     @Query(value = "SELECT * FROM ordenproducto WHERE ordencompra_id = :idOrdenCompra AND producto_id = :idProducto", nativeQuery = true)
     Optional<OrdenProducto> findOrdenProductoById(@Param("idOrdenCompra") Long idOrdenCompra, @Param("idProducto") Long idProducto);
