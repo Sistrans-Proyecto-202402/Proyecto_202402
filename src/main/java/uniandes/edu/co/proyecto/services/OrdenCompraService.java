@@ -195,7 +195,7 @@ public class OrdenCompraService {
                 Integer NuevasExistencias = bodegaProductoActual.getExistencias() + productoOrden.getCantidad();
 
                 try {
-                    bodegaProductoRepository.updateBodegaProducto(ordenCompraActual.getBodega().getId(), productoOrden.getId().getProducto().getId(), NuevasExistencias, NuevoPrecioPromedio, bodegaProductoActual.getCapacidad());
+                    bodegaProductoRepository.updateBodegaProducto(ordenCompraActual.getBodega().getId(), productoOrden.getId().getProducto().getId(), NuevasExistencias, NuevoPrecioPromedio);
                 }
                 catch (Exception e) {
                     throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al actualizar el producto en la bodega");
