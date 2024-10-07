@@ -19,6 +19,9 @@ public interface ProductoSucursalRepository extends JpaRepository<ProductoSucurs
     @Query(value = "SELECT * FROM productosucursal WHERE sucursal_id = :idSucursal AND producto_id = :idProducto", nativeQuery = true)
     Optional<ProductoSucursal> findProductoSucursalById(@Param("idSucursal") Long idSucursal, @Param("idProducto") Long idProducto);
 
+    @Query(value = "SELECT ps.sucursal_id FROM productosucursal ps WHERE ps.producto_id = :idProducto", nativeQuery = true)
+    List<Long> findSucursalesByProducto(@Param("idProducto") Long idProducto);
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO productosucursal (sucursal_id, producto_id, cantidadminima) VALUES (:idSucursal, :idProducto, :cantidadMinima)", nativeQuery = true)

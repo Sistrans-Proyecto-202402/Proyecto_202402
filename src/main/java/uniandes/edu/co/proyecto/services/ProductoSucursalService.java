@@ -86,10 +86,27 @@ public class ProductoSucursalService {
         }
     }
 
+    @Transactional
     public void deleteProductoSucursal(Long idProducto, Long idSucursal) {
 
         if (productoSucursalRepository.findProductoSucursalById(idSucursal, idProducto).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto no se encuentra registrado en la sucursal");
+        }
+
+        List<Long> bodegas = bodegaRepository.findBodegasBySucursal(idSucursal);
+
+        for (Long idBodega : bodegas) {
+
+            if (bodegaProductoRepository.findBodegaProductoById(idBodega, idProducto).get().getExistencias() > 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se puede eliminar el producto de la sucursal porque tiene existencias en la bodega");
+            }
+
+            try {
+                bodegaProductoRepository.deleteBodegaProducto(idBodega, idProducto);
+            } 
+            catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar el producto de la bodega");
+            }
         }
 
         try {
