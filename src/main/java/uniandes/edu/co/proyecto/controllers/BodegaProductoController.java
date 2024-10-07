@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uniandes.edu.co.proyecto.dtos.IndiceOcupacionDTO;
+import uniandes.edu.co.proyecto.dtos.OcupacionProductosRequest;
 import uniandes.edu.co.proyecto.entities.BodegaProducto;
 import uniandes.edu.co.proyecto.services.BodegaProductoService;
 import java.util.List;
@@ -25,6 +27,12 @@ public class BodegaProductoController {
     public ResponseEntity<BodegaProducto> findBodegaProductoById(@PathVariable Long idBodega, @PathVariable Long idProducto) {
         BodegaProducto bodegaProducto = bodegaProductoService.findBodegaProductoById(idBodega, idProducto);
         return ResponseEntity.status(HttpStatus.OK).body(bodegaProducto); 
+    }
+
+    @GetMapping("/find/bodegas/ocupacion")
+    public ResponseEntity<List<IndiceOcupacionDTO>> findOcupacionBodegasByProductos(@RequestBody OcupacionProductosRequest ocupacionProductosRequest) {
+        List<IndiceOcupacionDTO> indicesOcupacion = bodegaProductoService.findOcupacionBodegasByProductos(ocupacionProductosRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(indicesOcupacion);
     }
 
     @PutMapping("/{idBodega}/{idProducto}/update/capacidad")

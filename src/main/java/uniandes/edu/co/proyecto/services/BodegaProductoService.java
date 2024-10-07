@@ -9,6 +9,10 @@ import java.util.Optional;
 import uniandes.edu.co.proyecto.entities.BodegaProducto;
 import uniandes.edu.co.proyecto.repositories.BodegaProductoRepository;
 import uniandes.edu.co.proyecto.repositories.ProductoSucursalRepository;
+import uniandes.edu.co.proyecto.dtos.IndiceOcupacionDTO;
+import uniandes.edu.co.proyecto.dtos.OcupacionProductosRequest;
+import uniandes.edu.co.proyecto.entities.Producto;
+import java.util.ArrayList;
 
 @Service
 public class BodegaProductoService {
@@ -31,6 +35,39 @@ public class BodegaProductoService {
         }
 
         return bodegaProducto.get();
+    }
+
+    public List<IndiceOcupacionDTO> findOcupacionBodegasByProductos(OcupacionProductosRequest ocupacionProductosRequest) {
+
+        List<IndiceOcupacionDTO> indicesOcupacion = new ArrayList<>();
+        List<Producto> productos = ocupacionProductosRequest.getProductos();
+
+        if (productos.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La lista de productos a consultar no puede estar vacía");
+        }
+
+        for (Producto producto : productos) {
+            
+            List<BodegaProducto> bodegasProducto = bodegaProductoRepository.findBodegasByProducto(producto.getId());
+
+            if (bodegasProducto.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El producto no se encuentra registrado en ninguna bodega");
+            }
+
+            for (BodegaProducto bodegaProducto : bodegasProducto) {
+
+                double indiceOcupacion = (double) bodegaProducto.getExistencias() / bodegaProducto.getCapacidad();
+
+                IndiceOcupacionDTO indiceOcupacionDTO = new IndiceOcupacionDTO();
+                indiceOcupacionDTO.setBodega(bodegaProducto.getId().getBodega());
+                indiceOcupacionDTO.setProducto(bodegaProducto.getId().getProducto());
+                indiceOcupacionDTO.setIndiceOcupacion(indiceOcupacion * 100);
+
+                indicesOcupacion.add(indiceOcupacionDTO);
+            }
+        }
+
+        return indicesOcupacion;
     }
 
     public void updateCapacidadBodegaProducto(Long idBodega, Long idProducto, BodegaProducto bodegaProducto) {
