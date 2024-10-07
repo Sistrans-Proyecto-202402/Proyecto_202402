@@ -29,13 +29,12 @@ public interface SucursalRepository extends JpaRepository<Sucursal, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE sucursal SET nombre = :nombre, direccion = :direccion, telefono = :telefono, tamano = :tamano, ciudad_id = :idCiudad WHERE id = :idSucursal", nativeQuery = true)
+    @Query(value = "UPDATE sucursal SET nombre = :nombre, direccion = :direccion, telefono = :telefono, tamano = :tamano WHERE id = :idSucursal", nativeQuery = true)
     void updateSucursal(@Param("idSucursal") Long idSucursal,
                         @Param("nombre") String nombre,
                         @Param("direccion") String direccion,
                         @Param("telefono") Long telefono,
-                        @Param("tamano") String tamano,
-                        @Param("idCiudad") Long idCiudad);
+                        @Param("tamano") String tamano);
 
     @Modifying
     @Transactional
