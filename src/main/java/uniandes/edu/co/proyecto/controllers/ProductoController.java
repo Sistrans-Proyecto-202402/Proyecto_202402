@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uniandes.edu.co.proyecto.entities.Producto;
 import uniandes.edu.co.proyecto.services.ProductoService;
+import uniandes.edu.co.proyecto.dtos.CaracteristicasRequest;
 import java.util.List;
 
 @RestController
@@ -25,6 +26,12 @@ public class ProductoController {
     public ResponseEntity<Producto> findProductoById(@PathVariable Long idProducto) {
         Producto producto = productoService.findProductoById(idProducto);
         return ResponseEntity.status(HttpStatus.OK).body(producto); 
+    }
+
+    @GetMapping("/caracteristicas/find")
+    public ResponseEntity<List<Producto>> findProductosByCaracteristicas(@RequestBody CaracteristicasRequest caracteristicasRequest) {
+        List<Producto> productos = productoService.findProductosByCaracteristicas(caracteristicasRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(productos);
     }
 
     @PostMapping("/insert")

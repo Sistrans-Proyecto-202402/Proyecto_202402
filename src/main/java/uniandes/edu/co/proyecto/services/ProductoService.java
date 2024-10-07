@@ -8,9 +8,11 @@ import uniandes.edu.co.proyecto.entities.Producto;
 import uniandes.edu.co.proyecto.repositories.ProductoRepository;
 import uniandes.edu.co.proyecto.repositories.ProductoSucursalRepository;
 import uniandes.edu.co.proyecto.repositories.ProveedorProductoRepository;
+import uniandes.edu.co.proyecto.dtos.CaracteristicasRequest;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Service
 public class ProductoService {
@@ -36,6 +38,27 @@ public class ProductoService {
         }
 
         return producto.get();
+    }
+
+    public List<Producto> findProductosByCaracteristicas(CaracteristicasRequest caracteristicasRequest) {
+
+        List<Producto> productos = new ArrayList<Producto>();
+
+        if (caracteristicasRequest.getCategoria().getId() != 1) {
+            
+            productos = productoRepository.findProductosByCaracteristicas(caracteristicasRequest.getPrecioMinimo(), caracteristicasRequest.getPrecioMaximo(), null, null, caracteristicasRequest.getSucursal().getId(), caracteristicasRequest.getCategoria().getId());
+        }
+
+        if (caracteristicasRequest.getCategoria().getId() == 1) {
+            
+            productos = productoRepository.findProductosByCaracteristicas(caracteristicasRequest.getPrecioMinimo(), caracteristicasRequest.getPrecioMaximo(), caracteristicasRequest.getFechaMinima(), caracteristicasRequest.getFechaMaxima(), caracteristicasRequest.getSucursal().getId(), caracteristicasRequest.getCategoria().getId());
+        }
+
+        if (productos.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron productos con las características solicitadas");
+        }
+
+        return productos;
     }
 
     public void insertProducto(Producto producto) {
