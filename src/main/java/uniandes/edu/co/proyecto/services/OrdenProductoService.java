@@ -50,7 +50,14 @@ public class OrdenProductoService {
     }
 
     public List<OrdenProducto> findProductosOrdenCompra(Long idOrden) {
-        return ordenProductoRepository.findProductosOrdenCompra(idOrden);
+
+        List <OrdenProducto> productosOrden = ordenProductoRepository.findProductosOrdenCompra(idOrden);
+
+        if (productosOrden.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La orden de compra no se encuentra registrada");
+        }
+
+        return productosOrden;
     }
 
     public void insertOrdenProducto(Long idOrden, Long idProducto, OrdenProducto ordenProducto) {
