@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface BodegaProductoRepository extends JpaRepository<BodegaProducto, BodegaProductoPK> {
     
     @Query(value = "SELECT * FROM bodegaproducto ORDER BY bodegaproducto.bodega_id", nativeQuery = true)
-    List<BodegaProducto> findAllBodegaProductos();
+    List<BodegaProducto> findAllBodegasProductos();
 
     @Query(value = "SELECT * FROM bodegaproducto WHERE bodega_id = :idBodega AND producto_id = :idProducto", nativeQuery = true)
     Optional<BodegaProducto> findBodegaProductoById(@Param("idBodega") Long idBodega, @Param("idProducto") Long idProducto);
@@ -35,6 +35,13 @@ public interface BodegaProductoRepository extends JpaRepository<BodegaProducto, 
                               @Param("existencias") Integer existencias,
                               @Param("precioPromedio") Double precioPromedio,
                               @Param("capacidad") Integer capacidad);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE bodegaproducto SET capacidad = :capacidad WHERE bodega_id = :idBodega AND producto_id = :idProducto", nativeQuery = true)
+    void updateCapacidadBodegaProducto(@Param("idBodega") Long idBodega,
+                                       @Param("idProducto") Long idProducto,
+                                       @Param("capacidad") Integer capacidad);
 
     @Modifying
     @Transactional
