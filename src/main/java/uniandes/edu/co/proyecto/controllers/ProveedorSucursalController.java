@@ -22,15 +22,15 @@ public class ProveedorSucursalController {
         return ResponseEntity.status(HttpStatus.OK).body(proveedorSucursales);
     }
 
-    @GetMapping("/{sucursalId}/{proveedorId}")
+    @GetMapping("/{sucursalId}/{proveedorId}/find")
     public ResponseEntity<ProveedorSucursal> findProveedorSucursalById(@PathVariable Long sucursalId, @PathVariable Long proveedorId) {
         ProveedorSucursal proveedorSucursal = proveedorSucursalService.findProveedorSucursalById(sucursalId, proveedorId);
         return ResponseEntity.status(HttpStatus.OK).body(proveedorSucursal);
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<String> insertProveedorSucursal(@RequestParam Long sucursalId, @RequestParam Long proveedorId) {
-        proveedorSucursalService.insertProveedorSucursal(sucursalId, proveedorId);
+    public ResponseEntity<String> insertProveedorSucursal(@RequestBody ProveedorSucursal proveedorSucursal) {
+        proveedorSucursalService.insertProveedorSucursal(proveedorSucursal.getId().getSucursal().getId(), proveedorSucursal.getId().getProveedor().getId());
         return ResponseEntity.status(HttpStatus.CREATED).body("Relación Proveedor-Sucursal creada correctamente");
     }
 

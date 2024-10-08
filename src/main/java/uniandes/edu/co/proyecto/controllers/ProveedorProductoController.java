@@ -29,8 +29,8 @@ public class ProveedorProductoController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<String> insertProveedorProducto(@RequestParam Long productoId, @RequestParam Long proveedorId) {
-        proveedorProductoService.insertProveedorProducto(productoId, proveedorId);
+    public ResponseEntity<String> insertProveedorProducto(@RequestBody ProveedorProducto proveedorProducto) {
+        proveedorProductoService.insertProveedorProducto(proveedorProducto.getId().getProducto().getId(), proveedorProducto.getId().getProveedor().getId());
         return ResponseEntity.status(HttpStatus.CREATED).body("Relación Proveedor-Producto creada correctamente");
     }
 

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import uniandes.edu.co.proyecto.entities.Sucursal;
 import uniandes.edu.co.proyecto.repositories.SucursalRepository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +31,9 @@ public class SucursalService {
 
     public void insertSucursal(Sucursal sucursal) {
         try {
-            sucursalRepository.insertSucursal(sucursal.getNombre(), sucursal.getDireccion(),
-                sucursal.getTelefono(), sucursal.getTamano(), sucursal.getCiudad().getId());
-        } catch (Exception e) {
+            sucursalRepository.insertSucursal(sucursal.getNombre(), sucursal.getDireccion(), sucursal.getTelefono(), sucursal.getTamano(), sucursal.getCiudad().getId());
+        } 
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al insertar la sucursal");
         }
     }
@@ -45,9 +44,9 @@ public class SucursalService {
         }
 
         try {
-            sucursalRepository.updateSucursal(idSucursal, sucursal.getNombre(), sucursal.getDireccion(),
-                sucursal.getTelefono(), sucursal.getTamano(), sucursal.getCiudad().getId());
-        } catch (Exception e) {
+            sucursalRepository.updateSucursal(idSucursal, sucursal.getNombre(), sucursal.getDireccion(), sucursal.getTelefono(), sucursal.getTamano());
+        } 
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al actualizar la sucursal");
         }
     }
@@ -59,7 +58,8 @@ public class SucursalService {
 
         try {
             sucursalRepository.deleteSucursal(idSucursal);
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al eliminar la sucursal");
         }
     }
