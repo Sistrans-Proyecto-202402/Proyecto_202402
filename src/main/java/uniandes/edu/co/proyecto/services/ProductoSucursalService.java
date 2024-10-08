@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import jakarta.transaction.Transactional;
+import uniandes.edu.co.proyecto.dtos.ProductoDisponibleSucursalDTO;
 import uniandes.edu.co.proyecto.entities.ProductoSucursal;
 import uniandes.edu.co.proyecto.repositories.BodegaProductoRepository;
 import uniandes.edu.co.proyecto.repositories.BodegaRepository;
@@ -36,6 +37,17 @@ public class ProductoSucursalService {
         }
 
         return productoSucursal.get();
+    }
+
+    public List<ProductoDisponibleSucursalDTO> findSucursalesByProductoDisponible(Long idProducto) {
+        
+        List<ProductoDisponibleSucursalDTO> sucursalesProducto = productoSucursalRepository.findSucursalesByProductoDisponible(idProducto);
+
+        if (sucursalesProducto.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.ACCEPTED, "El producto no se encuentra disponible en ninguna sucursal");
+        }
+
+        return sucursalesProducto;
     }
 
     @Transactional

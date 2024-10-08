@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
+import uniandes.edu.co.proyecto.dtos.ProductosRequierenOrdenDTO;
 import uniandes.edu.co.proyecto.entities.OrdenCompra;
 import java.time.LocalDate;
 import java.util.*;
@@ -26,6 +27,9 @@ public interface OrdenCompraRepository extends JpaRepository<OrdenCompra, Long> 
                                                @Param("idProveedor") Long idProveedor,
                                                @Param("idSucursal") Long idSucursal,
                                                @Param("idBodega") Long idBodega);
+
+    @Query(value = "SELECT p.id AS idProducto, p.nombre AS nombreProducto, b.id AS idBodega, b.nombre AS nombreBodega, s.id AS idSucursal, s.nombre AS nombreSucursal, prov.id AS idProveedor, prov.nombre AS nombreProveedor, bp.existencias, ps.cantidadminima FROM producto p INNER JOIN bodegaproducto bp ON p.id = bp.producto_id INNER JOIN bodega b ON bp.bodega_id = b.id INNER JOIN sucursal s ON b.sucursal_id = s.id INNER JOIN productosucursal ps ON ps.producto_id = p.id AND ps.sucursal_id = s.id INNER JOIN proveedorproducto pp ON p.id = pp.producto_id INNER JOIN proveedor prov ON pp.proveedor_id = prov.id WHERE bp.existencias < ps.cantidadminima ORDER BY p.id, b.id, s.id", nativeQuery = true)
+    List<ProductosRequierenOrdenDTO> findProductosRequierenOrdenCompra();
 
     @Modifying
     @Transactional

@@ -13,6 +13,7 @@ import uniandes.edu.co.proyecto.repositories.BodegaProductoRepository;
 import uniandes.edu.co.proyecto.repositories.BodegaRepository;
 import uniandes.edu.co.proyecto.repositories.OrdenProductoRepository;
 import uniandes.edu.co.proyecto.dtos.ProductosOrdenDTO;
+import uniandes.edu.co.proyecto.dtos.ProductosRequierenOrdenDTO;
 import uniandes.edu.co.proyecto.repositories.ProveedorProductoRepository;
 import uniandes.edu.co.proyecto.repositories.ProveedorSucursalRepository;
 import uniandes.edu.co.proyecto.entities.Producto;
@@ -57,6 +58,17 @@ public class OrdenCompraService {
         }
 
         return ordenCompra.get();
+    }
+
+    public List<ProductosRequierenOrdenDTO> findProductosRequierenOrdenCompra() {
+        
+        List<ProductosRequierenOrdenDTO> productosRequierenOrden = ordenCompraRepository.findProductosRequierenOrdenCompra();
+
+        if (productosRequierenOrden.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron productos que requieran orden de compra");
+        }
+
+        return productosRequierenOrden;
     }
 
     @Transactional
