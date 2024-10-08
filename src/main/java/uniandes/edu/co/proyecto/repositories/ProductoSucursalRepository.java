@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
+import uniandes.edu.co.proyecto.dtos.ProductoDisponibleSucursalDTO;
 import uniandes.edu.co.proyecto.entities.ProductoSucursal;
 import uniandes.edu.co.proyecto.entities.ProductoSucursalPK;
 import java.util.*;
@@ -21,6 +22,9 @@ public interface ProductoSucursalRepository extends JpaRepository<ProductoSucurs
 
     @Query(value = "SELECT ps.sucursal_id FROM productosucursal ps WHERE ps.producto_id = :idProducto", nativeQuery = true)
     List<Long> findSucursalesByProducto(@Param("idProducto") Long idProducto);
+
+    @Query(value = "SELECT DISTINCT s.id AS idSucursal, s.nombre AS nombreSucursal, p.id AS idProducto, p.nombre AS nombreProducto FROM sucursal s INNER JOIN bodega b ON s.id = b.sucursal_id INNER JOIN bodegaproducto bp ON b.id = bp.bodega_id INNER JOIN producto p ON bp.producto_id = p.id WHERE p.id = :idProducto AND bp.existencias > 0 ORDER BY idSucursal", nativeQuery = true)
+    List<ProductoDisponibleSucursalDTO> findSucursalesByProductoDisponible(@Param("idProducto") Long idProducto);
 
     @Modifying
     @Transactional

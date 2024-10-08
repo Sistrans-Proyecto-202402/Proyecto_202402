@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import uniandes.edu.co.proyecto.dtos.ProductoDisponibleSucursalDTO;
 import uniandes.edu.co.proyecto.entities.ProductoSucursal;
 import uniandes.edu.co.proyecto.services.ProductoSucursalService;
 import java.util.List;
@@ -25,6 +27,12 @@ public class ProductoSucursalController {
     public ResponseEntity<ProductoSucursal> findProductoSucursalById(@PathVariable Long idProducto, @PathVariable Long idSucursal) {
         ProductoSucursal productoSucursal = productoSucursalService.findProductoSucursalById(idProducto, idSucursal);
         return ResponseEntity.status(HttpStatus.OK).body(productoSucursal); 
+    }
+
+    @GetMapping("/{idProducto}/find/sucursales/disponible")
+    public ResponseEntity<List<ProductoDisponibleSucursalDTO>> findSucursalesByProductoDisponible(@PathVariable Long idProducto) {
+        List<ProductoDisponibleSucursalDTO> sucursalesProducto = productoSucursalService.findSucursalesByProductoDisponible(idProducto);
+        return ResponseEntity.status(HttpStatus.OK).body(sucursalesProducto);
     }
 
     @PostMapping("/insert")

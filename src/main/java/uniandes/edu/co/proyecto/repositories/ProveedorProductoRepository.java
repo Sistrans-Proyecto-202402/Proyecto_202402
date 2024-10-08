@@ -22,6 +22,9 @@ public interface ProveedorProductoRepository extends JpaRepository<ProveedorProd
     @Query(value = "SELECT pp.proveedor_id FROM proveedorproducto pp WHERE pp.producto_id = :productoId", nativeQuery = true)
     List<Long> findProveedoresByProducto(@Param("productoId") Long productoId);
 
+    @Query(value = "SELECT pp.producto_id FROM proveedorproducto pp WHERE pp.proveedor_id = :proveedorId", nativeQuery = true)
+    List<Long> findProductosByProveedor(@Param("proveedorId") Long proveedorId);
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO proveedorproducto (producto_id, proveedor_id) VALUES (:productoId, :proveedorId)", nativeQuery = true)

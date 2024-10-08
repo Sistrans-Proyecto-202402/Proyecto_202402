@@ -60,6 +60,7 @@ public class OrdenProductoService {
         return productosOrden;
     }
 
+    // SE PUEDE INSERTAR UN NUEVO PRODUCTO A UNA ORDEN DE COMPRA YA CREADA???
     public void insertOrdenProducto(Long idOrden, Long idProducto, OrdenProducto ordenProducto) {
 
         Optional<OrdenCompra> ordenCompra = ordenCompraRepository.findOrdenCompraById(idOrden);
@@ -123,6 +124,7 @@ public class OrdenProductoService {
         }
     }
 
+    // SE PUEDE ACTUALIZAR UN PRODUCTO DE UNA ORDEN DE COMPRA YA CREADA???
     public void updateOrdenProducto(Long idOrden, Long idProducto, OrdenProducto ordenProducto) {
         Optional<OrdenProducto> ordenProductoOptional = ordenProductoRepository.findOrdenProductoById(idOrden, idProducto);
 
@@ -167,6 +169,7 @@ public class OrdenProductoService {
         }
     }
 
+    // SE PUEDE ELIMINAR UN PRODUCTO DE UNA ORDEN DE COMPRA YA CREADA???
     public void deleteOrdenProducto(Long idOrden, Long idProducto) {
         Optional<OrdenProducto> ordenProducto = ordenProductoRepository.findOrdenProductoById(idOrden, idProducto);
 

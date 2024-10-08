@@ -8,7 +8,7 @@ import uniandes.edu.co.proyecto.entities.OrdenCompra;
 import uniandes.edu.co.proyecto.services.OrdenCompraService;
 import java.util.List;
 import uniandes.edu.co.proyecto.dtos.OrdenCompraRequest;
-
+import uniandes.edu.co.proyecto.dtos.ProductosRequierenOrdenDTO;
 
 @RestController
 @RequestMapping("/ordenescompra")
@@ -27,6 +27,12 @@ public class OrdenCompraController {
     public ResponseEntity<OrdenCompra> findOrdenCompraById(@PathVariable Long idOrdenCompra) {
         OrdenCompra ordenCompra = ordenCompraService.findOrdenCompraById(idOrdenCompra);
         return ResponseEntity.status(HttpStatus.OK).body(ordenCompra); 
+    }
+
+    @GetMapping("/find/productos/orden/requerida")
+    public ResponseEntity<List<ProductosRequierenOrdenDTO>> findProductosRequierenOrdenCompra() {
+        List<ProductosRequierenOrdenDTO> productosRequierenOrden = ordenCompraService.findProductosRequierenOrdenCompra();
+        return ResponseEntity.status(HttpStatus.OK).body(productosRequierenOrden);
     }
 
     @PostMapping("/insert")

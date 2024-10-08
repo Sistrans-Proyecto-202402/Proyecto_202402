@@ -8,10 +8,11 @@ import uniandes.edu.co.proyecto.entities.Producto;
 import uniandes.edu.co.proyecto.repositories.ProductoRepository;
 import uniandes.edu.co.proyecto.repositories.ProductoSucursalRepository;
 import uniandes.edu.co.proyecto.repositories.ProveedorProductoRepository;
-
+import uniandes.edu.co.proyecto.dtos.CaracteristicasRequest;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Service
 public class ProductoService {
@@ -37,6 +38,41 @@ public class ProductoService {
         }
 
         return producto.get();
+    }
+
+    public List<Producto> findProductosByCaracteristicas(CaracteristicasRequest caracteristicasRequest) {
+
+        List<Producto> productos = new ArrayList<Producto>();
+        Long idSucursal = null;
+        Long idCategoria = null;
+        LocalDate fechaMinina = caracteristicasRequest.getFechaMinima();
+        LocalDate fechaMaxima = caracteristicasRequest.getFechaMaxima();
+
+        if (caracteristicasRequest.getSucursal() != null) {
+            idSucursal = caracteristicasRequest.getSucursal().getId();
+        }
+
+        if (caracteristicasRequest.getCategoria() != null) {
+            idCategoria = caracteristicasRequest.getCategoria().getId();
+
+            if (caracteristicasRequest.getCategoria().getId() != 1) {
+                fechaMinina = null;
+                fechaMaxima = null;
+            }
+        }
+
+        if (caracteristicasRequest.getCategoria() == null) {
+            fechaMinina = null;
+            fechaMaxima = null;
+        }
+
+        productos = productoRepository.findProductosByCaracteristicas(caracteristicasRequest.getPrecioMinimo(), caracteristicasRequest.getPrecioMaximo(), fechaMinina, fechaMaxima, idSucursal, idCategoria);
+
+        if (productos.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron productos con las características solicitadas");
+        }
+
+        return productos;
     }
 
     public void insertProducto(Producto producto) {
