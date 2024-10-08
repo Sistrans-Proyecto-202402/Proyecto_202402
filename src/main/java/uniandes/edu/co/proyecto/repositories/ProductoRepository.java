@@ -20,13 +20,13 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     @Query(value = "SELECT * FROM producto WHERE id = :idProducto", nativeQuery = true)  
     Optional<Producto> findProductoById(@Param("idProducto") Long idProducto);
 
-    @Query(value = "SELECT * FROM producto p INNER JOIN productosucursal ps ON p.id = ps.producto_id WHERE (:precioMinimo IS NULL OR p.preciounitario >= :precioMinimo) AND (:precioMaximo IS NULL OR p.preciounitario <= :precioMaximo) AND (:fechaMinima IS NULL OR p.fechaexpiracion >= :fechaMinima) AND (:fechaMaxima IS NULL OR p.fechaexpiracion <= :fechaMaxima) AND (:idSucursal IS NULL OR ps.sucursal_id = :idSucursal) AND (:idCategoria IS NULL OR p.categoria_id = :idCategoria)", nativeQuery = true)
+    @Query(value = "SELECT p.* FROM producto p INNER JOIN productosucursal ps ON p.id = ps.producto_id WHERE (:precioMinimo IS NULL OR p.preciounitario >= :precioMinimo) AND (:precioMaximo IS NULL OR p.preciounitario <= :precioMaximo) AND (:fechaMinima IS NULL OR p.fechaexpiracion >= :fechaMinima) AND (:fechaMaxima IS NULL OR p.fechaexpiracion <= :fechaMaxima) AND (:idSucursal IS NULL OR ps.sucursal_id = :idSucursal) AND (:idCategoria IS NULL OR p.categoria_id = :idCategoria)", nativeQuery = true)
     List<Producto> findProductosByCaracteristicas(@Param("precioMinimo") Double precioMinimo,
-                                                 @Param("precioMaximo") Double precioMaximo,
-                                                 @Param("fechaMinima") LocalDate fechaMinima,
-                                                 @Param("fechaMaxima") LocalDate fechaMaxima,
-                                                 @Param("idSucursal") Long idSucursal,
-                                                 @Param("idCategoria") Long idCategoria);
+                                                  @Param("precioMaximo") Double precioMaximo,
+                                                  @Param("fechaMinima") LocalDate fechaMinima,
+                                                  @Param("fechaMaxima") LocalDate fechaMaxima,
+                                                  @Param("idSucursal") Long idSucursal,
+                                                  @Param("idCategoria") Long idCategoria);
 
     @Modifying
     @Transactional

@@ -8,9 +8,9 @@ import java.time.LocalDate;
 @Data
 public class CaracteristicasRequest {
 
-    private Double precioMinimo;
+    private double precioMinimo;
 
-    private Double precioMaximo;
+    private double precioMaximo;
 
     private LocalDate fechaMinima;
 

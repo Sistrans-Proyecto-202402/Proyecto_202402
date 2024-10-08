@@ -1,15 +1,14 @@
 package uniandes.edu.co.proyecto.dtos;
 
-import uniandes.edu.co.proyecto.entities.Bodega;
-import uniandes.edu.co.proyecto.entities.Producto;
-import lombok.Data;
+public interface IndiceOcupacionDTO {
 
-@Data
-public class IndiceOcupacionDTO {
+    Long getIdBodega();
 
-    private Bodega bodega;
+    String getNombreBodega();
 
-    private Producto producto;
+    Long getIdProducto();
 
-    private double indiceOcupacion;
+    String getNombreProducto();
+
+    double getIndiceOcupacion();
 }

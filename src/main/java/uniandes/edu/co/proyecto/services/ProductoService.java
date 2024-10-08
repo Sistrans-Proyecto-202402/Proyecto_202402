@@ -43,16 +43,30 @@ public class ProductoService {
     public List<Producto> findProductosByCaracteristicas(CaracteristicasRequest caracteristicasRequest) {
 
         List<Producto> productos = new ArrayList<Producto>();
+        Long idSucursal = null;
+        Long idCategoria = null;
+        LocalDate fechaMinina = caracteristicasRequest.getFechaMinima();
+        LocalDate fechaMaxima = caracteristicasRequest.getFechaMaxima();
 
-        if (caracteristicasRequest.getCategoria().getId() != 1) {
-            
-            productos = productoRepository.findProductosByCaracteristicas(caracteristicasRequest.getPrecioMinimo(), caracteristicasRequest.getPrecioMaximo(), null, null, caracteristicasRequest.getSucursal().getId(), caracteristicasRequest.getCategoria().getId());
+        if (caracteristicasRequest.getSucursal() != null) {
+            idSucursal = caracteristicasRequest.getSucursal().getId();
         }
 
-        if (caracteristicasRequest.getCategoria().getId() == 1) {
-            
-            productos = productoRepository.findProductosByCaracteristicas(caracteristicasRequest.getPrecioMinimo(), caracteristicasRequest.getPrecioMaximo(), caracteristicasRequest.getFechaMinima(), caracteristicasRequest.getFechaMaxima(), caracteristicasRequest.getSucursal().getId(), caracteristicasRequest.getCategoria().getId());
+        if (caracteristicasRequest.getCategoria() != null) {
+            idCategoria = caracteristicasRequest.getCategoria().getId();
+
+            if (caracteristicasRequest.getCategoria().getId() != 1) {
+                fechaMinina = null;
+                fechaMaxima = null;
+            }
         }
+
+        if (caracteristicasRequest.getCategoria() == null) {
+            fechaMinina = null;
+            fechaMaxima = null;
+        }
+
+        productos = productoRepository.findProductosByCaracteristicas(caracteristicasRequest.getPrecioMinimo(), caracteristicasRequest.getPrecioMaximo(), fechaMinina, fechaMaxima, idSucursal, idCategoria);
 
         if (productos.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron productos con las características solicitadas");

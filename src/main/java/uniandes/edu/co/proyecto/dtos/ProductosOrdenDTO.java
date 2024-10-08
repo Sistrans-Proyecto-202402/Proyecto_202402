@@ -9,5 +9,5 @@ public class ProductosOrdenDTO {
 
     private Integer cantidad;
 
-    private Double precio;
+    private double precio;
 }

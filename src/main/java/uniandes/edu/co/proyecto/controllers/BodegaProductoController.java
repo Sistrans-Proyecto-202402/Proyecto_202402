@@ -4,10 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uniandes.edu.co.proyecto.dtos.BodegaProductoDTO;
 import uniandes.edu.co.proyecto.dtos.IndiceOcupacionDTO;
-import uniandes.edu.co.proyecto.dtos.OcupacionProductosRequest;
 import uniandes.edu.co.proyecto.entities.BodegaProducto;
 import uniandes.edu.co.proyecto.services.BodegaProductoService;
+import uniandes.edu.co.proyecto.entities.Producto;
 import java.util.List;
 
 @RestController
@@ -30,9 +31,15 @@ public class BodegaProductoController {
     }
 
     @GetMapping("/find/bodegas/ocupacion")
-    public ResponseEntity<List<IndiceOcupacionDTO>> findOcupacionBodegasByProductos(@RequestBody OcupacionProductosRequest ocupacionProductosRequest) {
-        List<IndiceOcupacionDTO> indicesOcupacion = bodegaProductoService.findOcupacionBodegasByProductos(ocupacionProductosRequest);
+    public ResponseEntity<List<IndiceOcupacionDTO>> findOcupacionBodegasByProductos(@RequestBody List<Producto> productos) {
+        List<IndiceOcupacionDTO> indicesOcupacion = bodegaProductoService.findOcupacionBodegasByProductos(productos);
         return ResponseEntity.status(HttpStatus.OK).body(indicesOcupacion);
+    }
+
+    @GetMapping("/{idBodega}/{idSucursal}/find/productos")
+    public ResponseEntity<List<BodegaProductoDTO>> findProductosByBodega(@PathVariable Long idBodega, @PathVariable Long idSucursal) {
+        List<BodegaProductoDTO> bodegasProducto = bodegaProductoService.findProductosByBodega(idBodega, idSucursal);
+        return ResponseEntity.status(HttpStatus.OK).body(bodegasProducto);
     }
 
     @PutMapping("/{idBodega}/{idProducto}/update/capacidad")
