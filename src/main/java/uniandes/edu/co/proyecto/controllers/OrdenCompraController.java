@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import uniandes.edu.co.proyecto.entities.OrdenCompra;
 import uniandes.edu.co.proyecto.services.OrdenCompraService;
 import java.util.List;
-import uniandes.edu.co.proyecto.dtos.DocumentoIngresoDTO;
+import uniandes.edu.co.proyecto.dtos.DocumentosIngresoBodega;
 import uniandes.edu.co.proyecto.dtos.OrdenCompraRequest;
 import uniandes.edu.co.proyecto.dtos.ProductosRequierenOrdenDTO;
 
@@ -36,9 +36,15 @@ public class OrdenCompraController {
         return ResponseEntity.status(HttpStatus.OK).body(productosRequierenOrden);
     }
 
-    @GetMapping("/{idSucursal}/{idBodega}/find/documentos/ingreso/productos/bodega")
-    public ResponseEntity<List<DocumentoIngresoDTO>> findDocumentosIngresoProductosByBodega(@PathVariable Long idSucursal, @PathVariable Long idBodega) {
-        List<DocumentoIngresoDTO> documentosIngreso = ordenCompraService.findDocumentosIngresoProductosByBodega(idSucursal, idBodega);
+    @GetMapping("/{idSucursal}/{idBodega}/find/documentos/ingreso/productos/bodega/serializable")
+    public ResponseEntity<DocumentosIngresoBodega> findDocumentosIngresoProductosByBodega(@PathVariable Long idSucursal, @PathVariable Long idBodega) {
+        DocumentosIngresoBodega documentosIngreso = ordenCompraService.findDocumentosIngresoProductosByBodegaSerializable(idSucursal, idBodega);
+        return ResponseEntity.status(HttpStatus.OK).body(documentosIngreso);
+    }
+
+    @GetMapping("/{idSucursal}/{idBodega}/find/documentos/ingreso/productos/bodega/read/committed")
+    public ResponseEntity<DocumentosIngresoBodega> findDocumentosIngresoProductosByBodegaReadCommitted(@PathVariable Long idSucursal, @PathVariable Long idBodega) {
+        DocumentosIngresoBodega documentosIngreso = ordenCompraService.findDocumentosIngresoProductosByBodegaReadCommitted(idSucursal, idBodega);
         return ResponseEntity.status(HttpStatus.OK).body(documentosIngreso);
     }
 

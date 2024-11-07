@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uniandes.edu.co.proyecto.entities.OrdenCompra;
 import uniandes.edu.co.proyecto.entities.OrdenProducto;
 import uniandes.edu.co.proyecto.repositories.OrdenCompraRepository;
+import uniandes.edu.co.proyecto.entities.Bodega;
 import uniandes.edu.co.proyecto.entities.BodegaProducto;
 import uniandes.edu.co.proyecto.repositories.BodegaProductoRepository;
 import uniandes.edu.co.proyecto.repositories.BodegaRepository;
@@ -16,6 +17,7 @@ import uniandes.edu.co.proyecto.repositories.OrdenProductoRepository;
 import uniandes.edu.co.proyecto.dtos.ProductosOrdenDTO;
 import uniandes.edu.co.proyecto.dtos.ProductosRequierenOrdenDTO;
 import uniandes.edu.co.proyecto.dtos.DocumentoIngresoDTO;
+import uniandes.edu.co.proyecto.dtos.DocumentosIngresoBodega;
 import uniandes.edu.co.proyecto.repositories.ProveedorProductoRepository;
 import uniandes.edu.co.proyecto.repositories.ProveedorSucursalRepository;
 import uniandes.edu.co.proyecto.entities.Producto;
@@ -74,20 +76,75 @@ public class OrdenCompraService {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE, readOnly = true)
-    public List<DocumentoIngresoDTO> findDocumentosIngresoProductosByBodega(Long idSucursal, Long idBodega) {
+    public DocumentosIngresoBodega findDocumentosIngresoProductosByBodegaSerializable(Long idSucursal, Long idBodega) {
 
-        if (idSucursal != bodegaRepository.findBodegaById(idBodega).get().getSucursal().getId()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La bodega debe pertenecer a la misma sucursal");
+        try {
+            Optional<Bodega> bodegaOptional = bodegaRepository.findBodegaById(idBodega);
+
+            if (bodegaOptional.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La bodega no se encuentra registrada");
+            }
+
+            Bodega bodega = bodegaOptional.get();
+
+            if (idSucursal != bodega.getSucursal().getId()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La bodega debe pertenecer a la misma sucursal");
+            }
+
+            LocalDate fechaLimite = LocalDate.now().minusDays(30);
+            List<DocumentoIngresoDTO> documentosIngreso = ordenCompraRepository.findDocumentosIngresoProductosByBodega(idSucursal, idBodega, fechaLimite);
+            Thread.sleep(30000);
+
+            if (documentosIngreso.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron documentos de ingreso de productos registrados en los ultimos 30 días");
+            }
+
+            DocumentosIngresoBodega documentosIngresoBodega = new DocumentosIngresoBodega();
+            documentosIngresoBodega.setSucursal(bodega.getSucursal().getNombre());
+            documentosIngresoBodega.setBodega(bodega.getNombre());
+            documentosIngresoBodega.setDocumentosIngreso(documentosIngreso);
+            
+            return documentosIngresoBodega;
         }
-
-        LocalDate fechaLimite = LocalDate.now().minusDays(30);
-        List<DocumentoIngresoDTO> documentosIngreso = ordenCompraRepository.findDocumentosIngresoProductosByBodega(idSucursal, idBodega, fechaLimite);
-
-        if (documentosIngreso.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron documentos de ingreso registrados en los ultimos 30 días");
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al consultar los documentos de ingreso de productos de la bodega");
         }
+    }
 
-        return documentosIngreso;
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    public DocumentosIngresoBodega findDocumentosIngresoProductosByBodegaReadCommitted(Long idSucursal, Long idBodega) {
+
+        try {
+            Optional<Bodega> bodegaOptional = bodegaRepository.findBodegaById(idBodega);
+
+            if (bodegaOptional.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La bodega no se encuentra registrada");
+            }
+
+            Bodega bodega = bodegaOptional.get();
+
+            if (idSucursal != bodega.getSucursal().getId()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La bodega debe pertenecer a la misma sucursal");
+            }
+
+            LocalDate fechaLimite = LocalDate.now().minusDays(30);
+            List<DocumentoIngresoDTO> documentosIngreso = ordenCompraRepository.findDocumentosIngresoProductosByBodega(idSucursal, idBodega, fechaLimite);
+            Thread.sleep(30000);
+
+            if (documentosIngreso.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron documentos de ingreso de productos registrados en los ultimos 30 días");
+            }
+
+            DocumentosIngresoBodega documentosIngresoBodega = new DocumentosIngresoBodega();
+            documentosIngresoBodega.setSucursal(bodega.getSucursal().getNombre());
+            documentosIngresoBodega.setBodega(bodega.getNombre());
+            documentosIngresoBodega.setDocumentosIngreso(documentosIngreso);
+            
+            return documentosIngresoBodega;
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al consultar los documentos de ingreso de productos de la bodega");
+        }
     }
         
     @Transactional
