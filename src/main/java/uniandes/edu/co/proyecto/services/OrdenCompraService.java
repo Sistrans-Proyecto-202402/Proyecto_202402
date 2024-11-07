@@ -3,8 +3,9 @@ package uniandes.edu.co.proyecto.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.web.server.ResponseStatusException;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import uniandes.edu.co.proyecto.entities.OrdenCompra;
 import uniandes.edu.co.proyecto.entities.OrdenProducto;
 import uniandes.edu.co.proyecto.repositories.OrdenCompraRepository;
@@ -14,6 +15,7 @@ import uniandes.edu.co.proyecto.repositories.BodegaRepository;
 import uniandes.edu.co.proyecto.repositories.OrdenProductoRepository;
 import uniandes.edu.co.proyecto.dtos.ProductosOrdenDTO;
 import uniandes.edu.co.proyecto.dtos.ProductosRequierenOrdenDTO;
+import uniandes.edu.co.proyecto.dtos.DocumentoIngresoDTO;
 import uniandes.edu.co.proyecto.repositories.ProveedorProductoRepository;
 import uniandes.edu.co.proyecto.repositories.ProveedorSucursalRepository;
 import uniandes.edu.co.proyecto.entities.Producto;
@@ -71,6 +73,23 @@ public class OrdenCompraService {
         return productosRequierenOrden;
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE, readOnly = true)
+    public List<DocumentoIngresoDTO> findDocumentosIngresoProductosByBodega(Long idSucursal, Long idBodega) {
+
+        if (idSucursal != bodegaRepository.findBodegaById(idBodega).get().getSucursal().getId()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La bodega debe pertenecer a la misma sucursal");
+        }
+
+        LocalDate fechaLimite = LocalDate.now().minusDays(30);
+        List<DocumentoIngresoDTO> documentosIngreso = ordenCompraRepository.findDocumentosIngresoProductosByBodega(idSucursal, idBodega, fechaLimite);
+
+        if (documentosIngreso.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron documentos de ingreso registrados en los ultimos 30 días");
+        }
+
+        return documentosIngreso;
+    }
+        
     @Transactional
     public void insertOrdenCompra(OrdenCompra ordenCompra, List<ProductosOrdenDTO> productosOrden) {
 

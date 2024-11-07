@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import uniandes.edu.co.proyecto.entities.OrdenCompra;
 import uniandes.edu.co.proyecto.services.OrdenCompraService;
 import java.util.List;
+import uniandes.edu.co.proyecto.dtos.DocumentoIngresoDTO;
 import uniandes.edu.co.proyecto.dtos.OrdenCompraRequest;
 import uniandes.edu.co.proyecto.dtos.ProductosRequierenOrdenDTO;
 
@@ -33,6 +34,12 @@ public class OrdenCompraController {
     public ResponseEntity<List<ProductosRequierenOrdenDTO>> findProductosRequierenOrdenCompra() {
         List<ProductosRequierenOrdenDTO> productosRequierenOrden = ordenCompraService.findProductosRequierenOrdenCompra();
         return ResponseEntity.status(HttpStatus.OK).body(productosRequierenOrden);
+    }
+
+    @GetMapping("/{idSucursal}/{idBodega}/find/documentos/ingreso/productos/bodega")
+    public ResponseEntity<List<DocumentoIngresoDTO>> findDocumentosIngresoProductosByBodega(@PathVariable Long idSucursal, @PathVariable Long idBodega) {
+        List<DocumentoIngresoDTO> documentosIngreso = ordenCompraService.findDocumentosIngresoProductosByBodega(idSucursal, idBodega);
+        return ResponseEntity.status(HttpStatus.OK).body(documentosIngreso);
     }
 
     @PostMapping("/insert")
