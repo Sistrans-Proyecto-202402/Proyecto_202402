@@ -91,9 +91,9 @@ public class OrdenCompraService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La bodega debe pertenecer a la misma sucursal");
             }
 
+            Thread.sleep(30000);
             LocalDate fechaLimite = LocalDate.now().minusDays(30);
             List<DocumentoIngresoDTO> documentosIngreso = ordenCompraRepository.findDocumentosIngresoProductosByBodega(idSucursal, idBodega, fechaLimite);
-            Thread.sleep(30000);
 
             if (documentosIngreso.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron documentos de ingreso de productos registrados en los ultimos 30 días");
@@ -127,9 +127,9 @@ public class OrdenCompraService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La bodega debe pertenecer a la misma sucursal");
             }
 
+            Thread.sleep(30000);
             LocalDate fechaLimite = LocalDate.now().minusDays(30);
             List<DocumentoIngresoDTO> documentosIngreso = ordenCompraRepository.findDocumentosIngresoProductosByBodega(idSucursal, idBodega, fechaLimite);
-            Thread.sleep(30000);
 
             if (documentosIngreso.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.ACCEPTED, "No se encontraron documentos de ingreso de productos registrados en los ultimos 30 días");
